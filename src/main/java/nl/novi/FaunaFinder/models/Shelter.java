@@ -18,7 +18,6 @@ public class Shelter {
     int phoneNumber;
     @OneToMany(mappedBy = "shelter")
     private List<Animal> animals;
-//    @OneToMany(mappedBy = "shelter")
-//    List<Donation> donations;
-
+    @OneToMany(mappedBy = "shelter")
+    List<Donation> donations;
 }

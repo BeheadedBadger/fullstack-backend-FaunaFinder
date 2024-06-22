@@ -18,6 +18,6 @@ public class User {
     Boolean moderator;
     @ManyToMany(mappedBy = "favourites")
     List<Animal> favourites;
-    //@OneToMany(mappedBy = "user")
-    //List<Donation> donations;
+    @OneToMany(mappedBy = "user")
+    List<Donation> donations;
 }
