@@ -1,25 +1,25 @@
-package nl.novi.FaunaFinder.models;
-import jakarta.persistence.*;
+package nl.novi.FaunaFinder.dtos.output;
+
+import nl.novi.FaunaFinder.models.Animal;
+import nl.novi.FaunaFinder.models.Donation;
+
 import java.util.List;
 
-@Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false, unique = true)
+public class UserOutputDto {
     Long id;
     String userName;
     String password;
     String postalCode;
     Boolean isModerator;
-    @ManyToMany(mappedBy = "favourites")
     List<Animal> favouriteAnimals;
-    @OneToMany(mappedBy = "user")
     List<Donation> donations;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUserName() {

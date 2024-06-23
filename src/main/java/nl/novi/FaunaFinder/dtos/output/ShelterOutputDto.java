@@ -1,12 +1,9 @@
-package nl.novi.FaunaFinder.models;
-import jakarta.persistence.*;
+package nl.novi.FaunaFinder.dtos.output;
+import nl.novi.FaunaFinder.models.Animal;
+import nl.novi.FaunaFinder.models.Donation;
 import java.util.List;
 
-@Entity
-@Table(name = "shelters")
-public class Shelter {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
+public class ShelterOutputDto {
     Long id;
     String name;
     String speciality;
@@ -14,13 +11,15 @@ public class Shelter {
     String postalCode;
     String address;
     int phoneNumber;
-    @OneToMany(mappedBy = "shelter")
     private List<Animal> animals;
-    @OneToMany(mappedBy = "shelter")
     List<Donation> donations;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

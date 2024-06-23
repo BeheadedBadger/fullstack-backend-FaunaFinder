@@ -1,20 +1,20 @@
-package nl.novi.FaunaFinder.models;
-import jakarta.persistence.*;
+package nl.novi.FaunaFinder.dtos.output;
 
-@Entity
-@Table(name = "donations")
-public class Donation {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Id
+import nl.novi.FaunaFinder.models.Shelter;
+import nl.novi.FaunaFinder.models.User;
+
+public class DonationOutputDto {
     Long id;
     int amount;
-    @ManyToOne
     Shelter shelter;
-    @ManyToOne
     User user;
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public int getAmount() {

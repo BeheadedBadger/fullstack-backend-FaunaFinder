@@ -1,12 +1,8 @@
-package nl.novi.FaunaFinder.models;
-import jakarta.persistence.*;
-import java.util.List;
+package nl.novi.FaunaFinder.dtos.output;
+import nl.novi.FaunaFinder.models.Animal;
+import nl.novi.FaunaFinder.models.Shelter;
 
-@Entity
-@Table(name = "animals")
-public class Animal {
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    @Id
+public class AnimalOutputDto {
     private Long id;
     private String name;
     private int age;
@@ -16,19 +12,14 @@ public class Animal {
     private Boolean warning;
     private String warningExplanation;
     private String description;
-    @ManyToOne
     private Shelter shelter;
-    @ManyToMany
-    private List<User> favourites;
-
-    public enum Sex {
-        F,
-        M,
-        X
-    }
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -47,11 +38,11 @@ public class Animal {
         this.age = age;
     }
 
-    public Sex getSex() {
+    public Animal.Sex getSex() {
         return sex;
     }
 
-    public void setSex(Sex sex) {
+    public void setSex(Animal.Sex sex) {
         this.sex = sex;
     }
 
@@ -101,13 +92,5 @@ public class Animal {
 
     public void setShelter(Shelter shelter) {
         this.shelter = shelter;
-    }
-
-    public List<User> getFavourites() {
-        return favourites;
-    }
-
-    public void setFavourites(List<User> favourites) {
-        this.favourites = favourites;
     }
 }
