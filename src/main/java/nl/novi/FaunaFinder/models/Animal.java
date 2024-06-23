@@ -1,5 +1,8 @@
 package nl.novi.FaunaFinder.models;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
+
 import java.util.List;
 
 @Entity
@@ -15,6 +18,7 @@ public class Animal {
     private String scientificSpeciesName;
     private Boolean warning;
     private String warningExplanation;
+    @Column(length = 2048)
     private String description;
     @ManyToOne
     private Shelter shelter;
