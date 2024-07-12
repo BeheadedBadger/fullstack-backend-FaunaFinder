@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Set;
 
 public class UserOutputDto {
-    Long id;
     String userName;
     String password;
     String postalCode;

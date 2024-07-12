@@ -6,9 +6,9 @@ import java.util.List;
 @Table(name = "users")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USERNAME", nullable = false, unique = true)
     String userName;
+    @Column(nullable = false, length = 255)
     String password;
     String postalCode;
     @ManyToOne

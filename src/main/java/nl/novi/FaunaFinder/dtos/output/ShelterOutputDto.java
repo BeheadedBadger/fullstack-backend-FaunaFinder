@@ -4,22 +4,23 @@ import nl.novi.FaunaFinder.models.Donation;
 import java.util.List;
 
 public class ShelterOutputDto {
-    Long id;
+    String username;
+    String password;
     String name;
     String speciality;
     String city;
     String postalCode;
     String address;
-    int phoneNumber;
+    String phoneNumber;
     private List<Animal> animals;
     List<Donation> donations;
 
-    public Long getId() {
-        return id;
-    }
+    public String getPassword() { return password; }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPassword(String password) { this.password = password; }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getName() {
@@ -62,11 +63,11 @@ public class ShelterOutputDto {
         this.address = address;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

@@ -8,6 +8,8 @@ public class ShelterMapper {
 
     public static Shelter fromInputDtoToModel (ShelterInputDto inputDto) {
         Shelter model = new Shelter();
+        model.setUsername(inputDto.userName);
+        model.setPassword(inputDto.password);
         model.setName(inputDto.name);
         model.setSpeciality(inputDto.speciality);
         model.setCity(inputDto.city);
@@ -19,7 +21,8 @@ public class ShelterMapper {
 
     public static ShelterOutputDto fromModelToOutputDto (Shelter model) {
         ShelterOutputDto outputDto = new ShelterOutputDto();
-        outputDto.setId(model.getId());
+        outputDto.setUsername(model.getUsername());
+        outputDto.setPassword(model.getPassword());
         outputDto.setName(model.getName());
         outputDto.setSpeciality(model.getSpeciality());
         outputDto.setCity(model.getCity());

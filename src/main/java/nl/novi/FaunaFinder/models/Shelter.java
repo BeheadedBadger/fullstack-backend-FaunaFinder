@@ -2,20 +2,21 @@ package nl.novi.FaunaFinder.models;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "shelters")
 public class Shelter {
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
-    Long id;
+    @Column(name = "USERNAME", nullable = false, unique = true)
+    String userName;
+    @Column(nullable = false, length = 255)
+    String password;
     String name;
     String speciality;
     String city;
     String postalCode;
     String address;
-    int phoneNumber;
+    String phoneNumber;
     @JsonSerialize
     @ManyToOne
     Authority authority;
@@ -24,8 +25,18 @@ public class Shelter {
     @OneToMany(mappedBy = "shelter")
     List<Donation> donations;
 
-    public Long getId() {
-        return id;
+    public String getUsername() {
+        return userName;
+    }
+
+    public void setUsername(String username) {this.userName = username;}
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getName() {
@@ -68,11 +79,11 @@ public class Shelter {
         this.address = address;
     }
 
-    public int getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(int phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
