@@ -7,20 +7,16 @@ import java.util.List;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false, unique = true)
-    Long id;
+    @Column(name = "USERNAME", nullable = false, unique = true)
     String userName;
     String password;
     String postalCode;
-    Boolean isModerator;
+    @ManyToOne
+    Authority authority;
     @ManyToMany(mappedBy = "favourites")
     List<Animal> favouriteAnimals;
     @OneToMany(mappedBy = "user")
     List<Donation> donations;
-
-    public Long getId() {
-        return id;
-    }
 
     public String getUserName() {
         return userName;
@@ -46,12 +42,12 @@ public class User {
         this.postalCode = postalCode;
     }
 
-    public Boolean getIsModerator() {
-        return isModerator;
+    public Authority getAuthority() {
+        return authority;
     }
 
-    public void setIsModerator(Boolean moderator) {
-        this.isModerator = moderator;
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
     }
 
     public List<Animal> getFavouriteAnimals() {

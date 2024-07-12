@@ -16,11 +16,10 @@ public class UserMapper {
 
     public static UserOutputDto fromModelToOutputDto(User model) {
         UserOutputDto outputDto = new UserOutputDto();
-        outputDto.setId(model.getId());
         outputDto.setUserName(model.getUserName());
         outputDto.setPassword(model.getPassword());
         outputDto.setPostalCode(model.getPostalCode());
-        outputDto.setIsModerator(model.getIsModerator());
+        outputDto.setAuthority(model.getAuthority());
         outputDto.setFavouriteAnimals(model.getFavouriteAnimals());
         outputDto.setDonations(model.getDonations());
         return outputDto;

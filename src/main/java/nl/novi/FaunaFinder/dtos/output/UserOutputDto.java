@@ -1,9 +1,12 @@
 package nl.novi.FaunaFinder.dtos.output;
 
 import nl.novi.FaunaFinder.models.Animal;
+import nl.novi.FaunaFinder.models.Authority;
 import nl.novi.FaunaFinder.models.Donation;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
+import java.util.Set;
 
 public class UserOutputDto {
     Long id;
@@ -13,14 +16,7 @@ public class UserOutputDto {
     Boolean isModerator;
     List<Animal> favouriteAnimals;
     List<Donation> donations;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+    Authority authority;
 
     public String getUserName() {
         return userName;
@@ -68,5 +64,13 @@ public class UserOutputDto {
 
     public void setDonations(List<Donation> donations) {
         this.donations = donations;
+    }
+
+    public Authority getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
     }
 }

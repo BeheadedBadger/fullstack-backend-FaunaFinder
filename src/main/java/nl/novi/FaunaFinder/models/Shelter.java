@@ -1,6 +1,8 @@
 package nl.novi.FaunaFinder.models;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "shelters")
@@ -14,6 +16,9 @@ public class Shelter {
     String postalCode;
     String address;
     int phoneNumber;
+    @JsonSerialize
+    @ManyToOne
+    Authority authority;
     @OneToMany(mappedBy = "shelter")
     private List<Animal> animals;
     @OneToMany(mappedBy = "shelter")
@@ -69,6 +74,14 @@ public class Shelter {
 
     public void setPhoneNumber(int phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public Authority getAuthority() {
+        return authority;
+    }
+
+    public void setAuthority(Authority authority) {
+        this.authority = authority;
     }
 
     public List<Animal> getAnimals() {

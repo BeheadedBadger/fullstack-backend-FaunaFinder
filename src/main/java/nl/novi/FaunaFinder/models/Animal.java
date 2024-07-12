@@ -1,8 +1,5 @@
 package nl.novi.FaunaFinder.models;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Size;
-
 import java.util.List;
 
 @Entity
@@ -16,6 +13,7 @@ public class Animal {
     private Animal.Sex sex;
     private String commonSpeciesName;
     private String scientificSpeciesName;
+    private String speciesCategory;
     private Boolean warning;
     private String warningExplanation;
     @Column(length = 2048)
@@ -73,6 +71,12 @@ public class Animal {
 
     public void setScientificSpeciesName(String scientificSpeciesName) {
         this.scientificSpeciesName = scientificSpeciesName;
+    }
+
+    public String getSpeciesCategory() { return speciesCategory; }
+
+    public void setSpeciesCategory(String speciesCategory) {
+        this.speciesCategory = speciesCategory;
     }
 
     public Boolean getWarning() {
