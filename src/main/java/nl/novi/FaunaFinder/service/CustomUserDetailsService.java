@@ -1,7 +1,7 @@
 package nl.novi.FaunaFinder.service;
-
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
 import nl.novi.FaunaFinder.models.Authority;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
@@ -21,13 +22,15 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) {
-        UserOutputDto userDto = userService.getUserByUsername(username);
+        UserOutputDto userOutputDto = userService.getUserByUsername(username);
 
-        String password = userDto.getPassword();
+        String password = userOutputDto.getPassword();
 
-        Authority authority = userDto.getAuthority();
+        Set<Authority> authorities = userOutputDto.getAuthorities();
         List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
-        grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
+        for (Authority authority: authorities) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(authority.getAuthority()));
+        }
 
         return new org.springframework.security.core.userdetails.User(username, password, grantedAuthorities);
     }

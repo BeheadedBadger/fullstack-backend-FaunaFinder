@@ -9,20 +9,20 @@ import java.util.List;
 import java.util.Set;
 
 public class UserOutputDto {
-    String userName;
+    String username;
     String password;
     String postalCode;
     Boolean isModerator;
     List<Animal> favouriteAnimals;
     List<Donation> donations;
-    Authority authority;
+    Set<Authority> authorities;
 
     public String getUserName() {
-        return userName;
+        return username;
     }
 
     public void setUserName(String userName) {
-        this.userName = userName;
+        this.username = userName;
     }
 
     public String getPassword() {
@@ -65,11 +65,11 @@ public class UserOutputDto {
         this.donations = donations;
     }
 
-    public Authority getAuthority() {
-        return authority;
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
+    public void setAuthority(Set<Authority> authorities) {
+        this.authorities = authorities;
     }
 }

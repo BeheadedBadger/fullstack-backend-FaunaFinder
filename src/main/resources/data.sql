@@ -1,3 +1,20 @@
+/*Create tables*/
+
+CREATE TABLE IF NOT EXISTS users(
+    username varchar(45) NOT NULL,
+    password varchar(450) NOT NULL,
+    enabled integer NOT NULL DEFAULT '1',
+    PRIMARY KEY (username)
+);
+
+CREATE TABLE IF NOT EXISTS authorities(
+    username varchar(45) NOT NULL,
+    authority varchar(45) NOT NULL,
+    PRIMARY KEY (username)
+);
+
+/*Add users if they don't exist, otherwise update them*/
+
 UPDATE users
 SET password='$2a$12$dqwh84gLBqxJhDpgBh9h6O3fPHGLTtWPT74DefxdEUKuqdSRj5Zy2'
 WHERE username = 'testUser';

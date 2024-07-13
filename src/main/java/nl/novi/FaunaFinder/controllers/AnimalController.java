@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/animals")
 public class AnimalController {
     private final AnimalService animalService;
     public AnimalController(AnimalService animalService) {

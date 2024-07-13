@@ -8,7 +8,7 @@ public class ShelterMapper {
 
     public static Shelter fromInputDtoToModel (ShelterInputDto inputDto) {
         Shelter model = new Shelter();
-        model.setUsername(inputDto.userName);
+        model.setUsername(inputDto.username);
         model.setPassword(inputDto.password);
         model.setName(inputDto.name);
         model.setSpeciality(inputDto.speciality);

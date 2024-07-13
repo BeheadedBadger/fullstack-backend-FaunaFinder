@@ -1,6 +1,9 @@
 package nl.novi.FaunaFinder.models;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -11,8 +14,15 @@ public class User {
     @Column(nullable = false, length = 255)
     String password;
     String postalCode;
-    @ManyToOne
-    Authority authority;
+
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
+
     @ManyToMany(mappedBy = "favourites")
     List<Animal> favouriteAnimals;
     @OneToMany(mappedBy = "user")
@@ -42,13 +52,12 @@ public class User {
         this.postalCode = postalCode;
     }
 
-    public Authority getAuthority() {
-        return authority;
+
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
-    }
+    public void setAuthorities(Set<Authority> authority) { this.authorities = authority;}
 
     public List<Animal> getFavouriteAnimals() {
         return favouriteAnimals;

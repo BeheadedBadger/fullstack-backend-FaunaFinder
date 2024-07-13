@@ -1,7 +1,7 @@
 package nl.novi.FaunaFinder.dtos.input;
 
 public class ShelterInputDto {
-    public String userName;
+    public String username;
     public String password;
     public String name;
     public String speciality;

@@ -1,7 +1,10 @@
 package nl.novi.FaunaFinder.models;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
+
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "shelters")
@@ -17,9 +20,15 @@ public class Shelter {
     String postalCode;
     String address;
     String phoneNumber;
-    @JsonSerialize
-    @ManyToOne
-    Authority authority;
+
+    @OneToMany(
+            targetEntity = Authority.class,
+            mappedBy = "username",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true,
+            fetch = FetchType.EAGER)
+    private Set<Authority> authorities = new HashSet<>();
+
     @OneToMany(mappedBy = "shelter")
     private List<Animal> animals;
     @OneToMany(mappedBy = "shelter")
@@ -87,12 +96,12 @@ public class Shelter {
         this.phoneNumber = phoneNumber;
     }
 
-    public Authority getAuthority() {
-        return authority;
+    public Set<Authority> getAuthorities() {
+        return authorities;
     }
 
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
+    public void setAuthorities(Set<Authority> authority) {
+        this.authorities = authority;
     }
 
     public List<Animal> getAnimals() {
