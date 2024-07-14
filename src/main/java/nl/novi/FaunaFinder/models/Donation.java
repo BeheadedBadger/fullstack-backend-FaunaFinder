@@ -9,7 +9,7 @@ public class Donation {
     Long id;
     int amount;
     @ManyToOne
-    Shelter shelter;
+    User shelter;
     @ManyToOne
     User user;
 
@@ -25,11 +25,11 @@ public class Donation {
         this.amount = amount;
     }
 
-    public Shelter getShelter() {
+    public User getShelter() {
         return shelter;
     }
 
-    public void setShelter(Shelter shelter) {
+    public void setShelter(User shelter) {
         this.shelter = shelter;
     }
 

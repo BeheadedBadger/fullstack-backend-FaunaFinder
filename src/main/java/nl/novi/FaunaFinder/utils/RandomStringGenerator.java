@@ -6,7 +6,7 @@ public class RandomStringGenerator {
     public static String getGeneratedString() {
         int leftLimit = 48; // numeral '0'
         int rightLimit = 122; // letter 'z'
-        int targetStringLength = 10;
+        int targetStringLength = 64;
         Random random = new Random();
 
         String generatedString = random.ints(leftLimit, rightLimit + 1)

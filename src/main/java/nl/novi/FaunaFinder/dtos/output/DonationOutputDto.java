@@ -1,12 +1,11 @@
 package nl.novi.FaunaFinder.dtos.output;
 
-import nl.novi.FaunaFinder.models.Shelter;
 import nl.novi.FaunaFinder.models.User;
 
 public class DonationOutputDto {
     Long id;
     int amount;
-    Shelter shelter;
+    User shelter;
     User user;
 
     public Long getId() {
@@ -25,11 +24,11 @@ public class DonationOutputDto {
         this.amount = amount;
     }
 
-    public Shelter getShelter() {
+    public User getShelter() {
         return shelter;
     }
 
-    public void setShelter(Shelter shelter) {
+    public void setShelter(User shelter) {
         this.shelter = shelter;
     }
 

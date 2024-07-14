@@ -1,14 +1,21 @@
 package nl.novi.FaunaFinder.dtos.output;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Getter;
 
+@Getter
 public class AuthenticationResponse {
+    @JsonProperty("access_token")
+    private String accessToken;
 
-        private final String jwt;
+    @JsonProperty("refresh_token")
+    private String refreshToken;
 
-        public AuthenticationResponse(String jwt) {
-            this.jwt = jwt;
-        }
+    @JsonProperty("message")
+    private String message;
 
-        public String getJwt() {
-            return jwt;
-        }
+    public AuthenticationResponse(String accessToken, String refreshToken, String message) {
+        this.accessToken = accessToken;
+        this.message = message;
+        this.refreshToken = refreshToken;
+    }
 }

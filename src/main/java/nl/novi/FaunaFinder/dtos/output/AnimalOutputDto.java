@@ -1,6 +1,6 @@
 package nl.novi.FaunaFinder.dtos.output;
 import nl.novi.FaunaFinder.models.Animal;
-import nl.novi.FaunaFinder.models.Shelter;
+import nl.novi.FaunaFinder.models.User;
 
 public class AnimalOutputDto {
     private Long id;
@@ -12,7 +12,7 @@ public class AnimalOutputDto {
     private Boolean warning;
     private String warningExplanation;
     private String description;
-    private Shelter shelter;
+    private User shelter;
 
     public Long getId() {
         return id;
@@ -86,11 +86,11 @@ public class AnimalOutputDto {
         this.description = description;
     }
 
-    public Shelter getShelter() {
+    public User getShelter() {
         return shelter;
     }
 
-    public void setShelter(Shelter shelter) {
+    public void setShelter(User shelter) {
         this.shelter = shelter;
     }
 }

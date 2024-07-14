@@ -1,28 +1,35 @@
 package nl.novi.FaunaFinder.dtos.output;
 
 import nl.novi.FaunaFinder.models.Animal;
-import nl.novi.FaunaFinder.models.Authority;
 import nl.novi.FaunaFinder.models.Donation;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 public class UserOutputDto {
-    String userName;
+    String username;
     String password;
     String postalCode;
-    Boolean isModerator;
     List<Animal> favouriteAnimals;
     List<Donation> donations;
-    Authority authority;
+    Collection<? extends GrantedAuthority> authorities;
+    boolean isPresent;
 
-    public String getUserName() {
-        return userName;
+    public boolean isPresent() {
+        return isPresent;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setPresent(boolean present) {
+        isPresent = present;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -41,14 +48,6 @@ public class UserOutputDto {
         this.postalCode = postalCode;
     }
 
-    public Boolean getIsModerator() {
-        return isModerator;
-    }
-
-    public void setIsModerator(Boolean moderator) {
-        this.isModerator = moderator;
-    }
-
     public List<Animal> getFavouriteAnimals() {
         return favouriteAnimals;
     }
@@ -65,11 +64,9 @@ public class UserOutputDto {
         this.donations = donations;
     }
 
-    public Authority getAuthority() {
-        return authority;
-    }
+    public Collection<? extends GrantedAuthority> getAuthorities() { return authorities;}
 
-    public void setAuthority(Authority authority) {
-        this.authority = authority;
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 }

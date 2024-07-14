@@ -2,7 +2,6 @@ package nl.novi.FaunaFinder.controllers;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.service.AnimalService;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -12,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping()
+@RequestMapping("/animals")
 public class AnimalController {
     private final AnimalService animalService;
     public AnimalController(AnimalService animalService) {
@@ -26,7 +25,7 @@ public class AnimalController {
         return ResponseEntity.created(uri).body(outPutDto);
     }
 
-    @PostMapping("animals/batch")
+    @PostMapping("/batch")
     public ResponseEntity<List<AnimalOutputDto>> addAnimals (@RequestBody ArrayList<AnimalInputDto> inputDtos) {
         for (AnimalInputDto inputDto : inputDtos) {
             AnimalOutputDto outputDto = animalService.create(inputDto);

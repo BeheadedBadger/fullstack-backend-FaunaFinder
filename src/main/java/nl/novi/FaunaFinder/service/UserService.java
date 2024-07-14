@@ -1,39 +1,22 @@
 package nl.novi.FaunaFinder.service;
-import nl.novi.FaunaFinder.dtos.mapper.UserMapper;
-import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
-import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
-    private final UserRepository repo;
+    private final UserRepository repository;
 
-    public UserService(UserRepository userRepository) {
-        this.repo = userRepository;
+    public UserService(UserRepository repository) {
+        this.repository = repository;
     }
 
-    public UserOutputDto getUserByUsername(String username) throws UsernameNotFoundException {
-        UserOutputDto outputDto = new UserOutputDto();
-        Optional<User> u = repo.findById(Long.valueOf(username));
-        if (u.isPresent()){
-            outputDto = UserMapper.fromModelToOutputDto(u.get());
-        }else {
-            throw new UsernameNotFoundException(username);
-        }
-        return outputDto;
-    }
-
-    public UserOutputDto GetUserByID(long id) throws Exception {
-        Optional<User> t = repo.findById(id);
-        if (t.isPresent()) {
-            return UserMapper.fromModelToOutputDto(t.get());
-        } else {
-            //TODO //throw new UserNotFoundException();
-            throw new Exception();
-        }
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 }

@@ -19,7 +19,7 @@ public class Animal {
     @Column(length = 2048)
     private String description;
     @ManyToOne
-    private Shelter shelter;
+    private User shelter;
     @ManyToMany
     private List<User> favourites;
 
@@ -103,11 +103,11 @@ public class Animal {
         this.description = description;
     }
 
-    public Shelter getShelter() {
+    public User getShelter() {
         return shelter;
     }
 
-    public void setShelter(Shelter shelter) {
+    public void setShelter(User shelter) {
         this.shelter = shelter;
     }
 
