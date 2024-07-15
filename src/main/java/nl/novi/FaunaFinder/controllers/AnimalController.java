@@ -40,4 +40,11 @@ public class AnimalController {
     public ResponseEntity<List<AnimalOutputDto>> getAllAnimals() {
         return ResponseEntity.ok().body(animalService.getAll());
     }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity<AnimalOutputDto> getUser(@PathVariable("id") Long animalid) {
+        AnimalOutputDto optionalAnimal = animalService.get(animalid);
+        
+        return ResponseEntity.ok().body(optionalAnimal);
+    }
 }

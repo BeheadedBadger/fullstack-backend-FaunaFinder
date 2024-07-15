@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AnimalService {
@@ -21,6 +22,16 @@ public class AnimalService {
     public AnimalOutputDto create (AnimalInputDto inputDto) {
         Animal model = repo.save(AnimalMapper.fromInputDtoToModel(inputDto));
         return AnimalMapper.fromModelToOutputDto(model);
+    }
+
+    public AnimalOutputDto get (Long id) {
+        Optional<Animal> model = repo.findById(id);
+        if(model.isPresent()) {
+            return AnimalMapper.fromModelToOutputDto(model.get());
+        }
+
+        //TODO: return AnimalNotFoundException();
+        return null;
     }
 
     public List<AnimalOutputDto> getAll() {
