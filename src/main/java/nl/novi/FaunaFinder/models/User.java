@@ -29,7 +29,10 @@ public class User implements UserDetails {
     List<Donation> donations;
     @Setter
     @Getter
+    @Enumerated(EnumType.STRING)
     Role role;
+
+    //Shelter-specific
     @Setter
     @Getter
     String speciality;
