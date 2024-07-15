@@ -8,19 +8,16 @@ public class UserMapper {
 
     public static User fromInputDtoToModel(UserInputDto inputDto) {
         User model = new User();
-        model.setUserName(inputDto.userName);
+        model.setUsername(inputDto.username);
         model.setPassword(inputDto.password);
-        model.setPostalCode(inputDto.postalCode);
         return model;
     }
 
     public static UserOutputDto fromModelToOutputDto(User model) {
         UserOutputDto outputDto = new UserOutputDto();
-        outputDto.setId(model.getId());
-        outputDto.setUserName(model.getUserName());
+        outputDto.setUsername(model.getUsername());
         outputDto.setPassword(model.getPassword());
-        outputDto.setPostalCode(model.getPostalCode());
-        outputDto.setIsModerator(model.getIsModerator());
+        outputDto.setAuthorities(model.getAuthorities());
         outputDto.setFavouriteAnimals(model.getFavouriteAnimals());
         outputDto.setDonations(model.getDonations());
         return outputDto;

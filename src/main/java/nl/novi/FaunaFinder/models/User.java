@@ -1,72 +1,75 @@
 package nl.novi.FaunaFinder.models;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.Collection;
 import java.util.List;
 
 @Entity
 @Table(name = "users")
-public class User {
+public class User implements UserDetails {
+    @Setter
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID", nullable = false, unique = true)
-    Long id;
-    String userName;
+    @Column(name = "USERNAME", nullable = false, unique = true)
+    String username;
+    @Setter
+    @Column(nullable = false, length = 255)
     String password;
-    String postalCode;
-    Boolean isModerator;
+    @Setter
+    @Getter
     @ManyToMany(mappedBy = "favourites")
     List<Animal> favouriteAnimals;
+    @Setter
+    @Getter
     @OneToMany(mappedBy = "user")
     List<Donation> donations;
+    @Setter
+    @Getter
+    Role role;
+    @Setter
+    @Getter
+    String speciality;
+    @Setter
+    @Getter
+    @OneToMany(mappedBy = "shelter")
+    List<Animal> shelterAnimals;
 
-    public Long getId() {
-        return id;
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.name()));
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
+    @Override
     public String getPassword() {
         return password;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    @Override
+    public String getUsername() {
+        return username;
     }
 
-    public String getPostalCode() {
-        return postalCode;
+    @Override
+    public boolean isAccountNonExpired() {
+        return UserDetails.super.isAccountNonExpired();
     }
 
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
+    @Override
+    public boolean isAccountNonLocked() {
+        return UserDetails.super.isAccountNonLocked();
     }
 
-    public Boolean getIsModerator() {
-        return isModerator;
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return UserDetails.super.isCredentialsNonExpired();
     }
 
-    public void setIsModerator(Boolean moderator) {
-        this.isModerator = moderator;
-    }
-
-    public List<Animal> getFavouriteAnimals() {
-        return favouriteAnimals;
-    }
-
-    public void setFavouriteAnimals(List<Animal> favouriteAnimals) {
-        this.favouriteAnimals = favouriteAnimals;
-    }
-
-    public List<Donation> getDonations() {
-        return donations;
-    }
-
-    public void setDonations(List<Donation> donations) {
-        this.donations = donations;
+    @Override
+    public boolean isEnabled() {
+        return UserDetails.super.isEnabled();
     }
 }
