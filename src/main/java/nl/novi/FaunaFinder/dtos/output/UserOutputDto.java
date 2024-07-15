@@ -2,32 +2,34 @@ package nl.novi.FaunaFinder.dtos.output;
 
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Donation;
+import org.springframework.security.core.GrantedAuthority;
 
+import java.util.Collection;
 import java.util.List;
 
 public class UserOutputDto {
-    Long id;
-    String userName;
+    String username;
     String password;
     String postalCode;
-    Boolean isModerator;
     List<Animal> favouriteAnimals;
     List<Donation> donations;
+    Collection<? extends GrantedAuthority> authorities;
+    boolean isPresent;
 
-    public Long getId() {
-        return id;
+    public boolean isPresent() {
+        return isPresent;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPresent(boolean present) {
+        isPresent = present;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getPassword() {
@@ -46,14 +48,6 @@ public class UserOutputDto {
         this.postalCode = postalCode;
     }
 
-    public Boolean getIsModerator() {
-        return isModerator;
-    }
-
-    public void setIsModerator(Boolean moderator) {
-        this.isModerator = moderator;
-    }
-
     public List<Animal> getFavouriteAnimals() {
         return favouriteAnimals;
     }
@@ -68,5 +62,11 @@ public class UserOutputDto {
 
     public void setDonations(List<Donation> donations) {
         this.donations = donations;
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() { return authorities;}
+
+    public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
+        this.authorities = authorities;
     }
 }

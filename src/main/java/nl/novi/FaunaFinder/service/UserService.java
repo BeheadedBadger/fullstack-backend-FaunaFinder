@@ -1,15 +1,22 @@
 package nl.novi.FaunaFinder.service;
-
 import nl.novi.FaunaFinder.repositories.UserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserService {
+public class UserService implements UserDetailsService {
 
-    private final UserRepository repo;
+    private final UserRepository repository;
 
-    public UserService(UserRepository userRepository) {
-        this.repo = userRepository;
+    public UserService(UserRepository repository) {
+        this.repository = repository;
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username)
+                .orElseThrow(()-> new UsernameNotFoundException("User not found"));
+    }
 }
