@@ -2,6 +2,8 @@ package nl.novi.FaunaFinder.service;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
 import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
+import nl.novi.FaunaFinder.exceptions.AnimalCreationException;
+import nl.novi.FaunaFinder.exceptions.AnimalNotFoundException;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.repositories.AnimalRepository;
 import org.springframework.stereotype.Service;
@@ -20,8 +22,14 @@ public class AnimalService {
     }
 
     public AnimalOutputDto create (AnimalInputDto inputDto) {
-        Animal model = repo.save(AnimalMapper.fromInputDtoToModel(inputDto));
-        return AnimalMapper.fromModelToOutputDto(model);
+        try {
+            Animal model = repo.save(AnimalMapper.fromInputDtoToModel(inputDto));
+            return AnimalMapper.fromModelToOutputDto(model);
+        }
+        catch (AnimalCreationException e) {
+            throw new AnimalCreationException(e.getCause());
+        }
+
     }
 
     public AnimalOutputDto get (Long id) {
@@ -29,9 +37,9 @@ public class AnimalService {
         if(model.isPresent()) {
             return AnimalMapper.fromModelToOutputDto(model.get());
         }
-
-        //TODO: return AnimalNotFoundException();
-        return null;
+        else {
+            throw new AnimalNotFoundException(id);
+        }
     }
 
     public List<AnimalOutputDto> getAll() {

@@ -2,6 +2,8 @@ package nl.novi.FaunaFinder.service;
 import nl.novi.FaunaFinder.dtos.input.UserInputDto;
 import nl.novi.FaunaFinder.dtos.mapper.UserMapper;
 import nl.novi.FaunaFinder.dtos.output.AuthenticationResponse;
+import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
+import nl.novi.FaunaFinder.exceptions.TokenGenerationFailedException;
 import nl.novi.FaunaFinder.models.Token;
 import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.repositories.TokenRepository;
@@ -15,10 +17,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AuthenticationService {
@@ -67,22 +71,36 @@ public class AuthenticationService {
 
     }
 
-    public AuthenticationResponse authenticate(UserInputDto request) throws Exception {
+    public AuthenticationResponse authenticate(UserInputDto request) {
+        Optional<User> user;
+
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.username,
-                        request.password
-                )
-        );
+                    new UsernamePasswordAuthenticationToken(
+                            request.username,
+                            request.password
+                    ));
 
-        User user = repository.findByUsername(request.username).orElseThrow();
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
+        try {
+            user = repository.findByUsername(request.username);
+        } catch (UsernameNotFoundException e) {
+            throw new UsernameNotFoundException(e.getMessage());
+        }
 
-        revokeAllTokenByUser(user);
-        saveUserToken(accessToken, refreshToken, user);
+        if (user.isPresent()) {
+            try {
+                String accessToken = jwtService.generateAccessToken(user.get());
+                String refreshToken = jwtService.generateRefreshToken(user.get());
 
-        return new AuthenticationResponse(accessToken, refreshToken, "User login was successful");
+                revokeAllTokenByUser(user.get());
+                saveUserToken(accessToken, refreshToken, user.get());
+
+                return new AuthenticationResponse(accessToken, refreshToken, "User login was successful");
+            }
+            catch(TokenGenerationFailedException e){
+                throw new TokenGenerationFailedException(e.getCause());
+            }
+        }
+        return null;
     }
 
     private void revokeAllTokenByUser(User user) {
