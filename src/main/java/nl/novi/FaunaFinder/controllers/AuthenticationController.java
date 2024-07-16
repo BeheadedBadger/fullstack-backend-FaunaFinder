@@ -3,6 +3,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import nl.novi.FaunaFinder.dtos.input.UserInputDto;
 import nl.novi.FaunaFinder.dtos.output.AuthenticationResponse;
+import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
 import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
@@ -25,22 +26,19 @@ public class AuthenticationController {
         try {
             return ResponseEntity.ok(authService.register(request));
         }
-        catch (Exception e) {
-            //TODO return AuthenticationFailedException;
-            throw new Exception(e.getCause());
+        catch(AuthenticationFailedException e) {
+            throw new AuthenticationFailedException(e.getCause());
         }
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody UserInputDto request) throws Exception {
 
-
         try {
             return ResponseEntity.ok(authService.authenticate(request));
         }
-        catch(Exception e) {
-           //TODO return AuthenticationFailedException;
-            throw new Exception(e.getCause());
+        catch(AuthenticationFailedException e) {
+            throw new AuthenticationFailedException(e.getCause());
         }
     }
 
@@ -49,9 +47,8 @@ public class AuthenticationController {
         try {
             return ResponseEntity.ok(authService.refreshToken(request, response));
         }
-        catch (Exception e) {
-            //TODO return AuthenticationFailedException;
-            throw new Exception(e.getCause());
+        catch(AuthenticationFailedException e) {
+            throw new AuthenticationFailedException(e.getCause());
         }
     }
 }

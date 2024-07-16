@@ -41,7 +41,7 @@ public class AnimalController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<AnimalOutputDto> getUser(@PathVariable("id") Long animalid) {
+    public ResponseEntity<AnimalOutputDto> getAnimal(@PathVariable("id") Long animalid) {
         AnimalOutputDto optionalAnimal = animalService.get(animalid);
         
         return ResponseEntity.ok().body(optionalAnimal);
