@@ -10,6 +10,7 @@ public class Animal {
     private Long id;
     private String name;
     private int age;
+    @Enumerated(EnumType.STRING)
     private Animal.Sex sex;
     private String commonSpeciesName;
     private String scientificSpeciesName;

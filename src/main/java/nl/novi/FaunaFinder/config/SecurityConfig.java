@@ -1,7 +1,6 @@
 package nl.novi.FaunaFinder.config;
 import nl.novi.FaunaFinder.filter.JwtAuthenticationFilter;
 import nl.novi.FaunaFinder.repositories.UserRepository;
-import nl.novi.FaunaFinder.service.CustomUserDetailService;
 import nl.novi.FaunaFinder.service.JwtService;
 import nl.novi.FaunaFinder.service.UserService;
 import org.springframework.context.annotation.Bean;
@@ -29,14 +28,12 @@ public class SecurityConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        return new CustomUserDetailService(this.userRepository);
+        return new UserService(this.userRepository);
     }
 
     private final JwtService jwtService;
 
-    public SecurityConfig(UserService userService, UserRepository userRepository,
-                          JwtAuthenticationFilter jwtAuthenticationFilter,
-                          CustomLogoutHandler logoutHandler, JwtService jwtService) {
+    public SecurityConfig(UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
         this.jwtService = jwtService;
     }
@@ -49,6 +46,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
                         .requestMatchers(HttpMethod.GET, "/animals").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/animals").hasRole("SHELTER")
+                        .requestMatchers(HttpMethod.DELETE, "/animals/**").hasAnyRole("ADMIN", "SHELTER")
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyRole("ADMIN")
                         .requestMatchers("/**").authenticated()
                         .anyRequest().denyAll()
                 )
@@ -65,7 +65,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        return configuration.getAuthenticationManager();
+    public static AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
     }
 }

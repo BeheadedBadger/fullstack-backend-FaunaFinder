@@ -8,12 +8,13 @@ import nl.novi.FaunaFinder.repositories.TokenRepository;
 import nl.novi.FaunaFinder.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -27,14 +28,14 @@ public class AuthenticationService {
 
     private final TokenRepository tokenRepository;
 
-    private final AuthenticationManager authenticationManager;
     private final PasswordEncoder passwordEncoder;
+
+    private final AuthenticationManager authenticationManager;
 
     public AuthenticationService(UserRepository repository,
                                  PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
-                                 TokenRepository tokenRepository,
-                                 AuthenticationManager authenticationManager) {
+                                 TokenRepository tokenRepository, AuthenticationManager authenticationManager) {
         this.repository = repository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
@@ -67,25 +68,21 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse authenticate(UserInputDto request) throws Exception {
-            String username = request.username;
-            String password = request.password;
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.username,
+                        request.password
+                )
+        );
 
-            try {
-                authenticationManager.authenticate(
-                        new UsernamePasswordAuthenticationToken(username, password)
-                );
-                User user = repository.findByUsername(request.username).orElseThrow();
-                String accessToken = jwtService.generateAccessToken(user);
-                String refreshToken = jwtService.generateRefreshToken(user);
+        User user = repository.findByUsername(request.username).orElseThrow();
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
 
-                revokeAllTokenByUser(user);
-                saveUserToken(accessToken, refreshToken, user);
+        revokeAllTokenByUser(user);
+        saveUserToken(accessToken, refreshToken, user);
 
-                return new AuthenticationResponse(accessToken, refreshToken, "User login was successful");
-            }
-            catch (BadCredentialsException ex) {
-                throw new Exception("Incorrect username or password", ex);
-            }
+        return new AuthenticationResponse(accessToken, refreshToken, "User login was successful");
     }
 
     private void revokeAllTokenByUser(User user) {

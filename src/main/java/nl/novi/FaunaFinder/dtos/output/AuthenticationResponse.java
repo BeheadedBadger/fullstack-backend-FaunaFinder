@@ -1,8 +1,6 @@
 package nl.novi.FaunaFinder.dtos.output;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Getter;
 
-@Getter
 public class AuthenticationResponse {
     @JsonProperty("access_token")
     private String accessToken;
