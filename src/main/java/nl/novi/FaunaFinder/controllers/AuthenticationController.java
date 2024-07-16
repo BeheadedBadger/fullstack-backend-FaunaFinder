@@ -33,6 +33,8 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> login(@RequestBody UserInputDto request) throws Exception {
+
+
         try {
             return ResponseEntity.ok(authService.authenticate(request));
         }

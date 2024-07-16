@@ -1,5 +1,4 @@
 package nl.novi.FaunaFinder.dtos.mapper;
-
 import nl.novi.FaunaFinder.dtos.input.UserInputDto;
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
 import nl.novi.FaunaFinder.models.Role;
@@ -19,6 +18,8 @@ public class UserMapper {
         UserOutputDto outputDto = new UserOutputDto();
         outputDto.setUsername(model.getUsername());
         outputDto.setPassword(model.getPassword());
+        outputDto.setAuthorities(model.getAuthorities());
+        outputDto.setRole(model.getRole());
         outputDto.setAuthorities(model.getAuthorities());
         outputDto.setFavouriteAnimals(model.getFavouriteAnimals());
         outputDto.setDonations(model.getDonations());
