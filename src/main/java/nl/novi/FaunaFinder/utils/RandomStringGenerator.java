@@ -15,7 +15,6 @@ public class RandomStringGenerator {
                 .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
                 .toString();
 
-        System.out.println(generatedString);
         return generatedString;
     }
 }

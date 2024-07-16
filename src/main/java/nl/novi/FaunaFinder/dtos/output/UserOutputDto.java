@@ -1,7 +1,10 @@
 package nl.novi.FaunaFinder.dtos.output;
 
+import lombok.Getter;
+import lombok.Setter;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Donation;
+import nl.novi.FaunaFinder.models.Role;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -10,10 +13,12 @@ import java.util.List;
 public class UserOutputDto {
     String username;
     String password;
-    String postalCode;
     List<Animal> favouriteAnimals;
     List<Donation> donations;
     Collection<? extends GrantedAuthority> authorities;
+    @Getter
+    @Setter
+    Role role;
     boolean isPresent;
 
     public boolean isPresent() {
@@ -38,14 +43,6 @@ public class UserOutputDto {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public String getPostalCode() {
-        return postalCode;
-    }
-
-    public void setPostalCode(String postalCode) {
-        this.postalCode = postalCode;
     }
 
     public List<Animal> getFavouriteAnimals() {
