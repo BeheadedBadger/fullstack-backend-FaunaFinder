@@ -11,7 +11,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import javax.crypto.SecretKey;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Function;
 import static nl.novi.FaunaFinder.utils.RandomStringGenerator.getGeneratedString;
 
@@ -20,9 +24,7 @@ public class JwtService {
 
     private final static String SECRET_KEY = getGeneratedString();
 
-    private long accessTokenExpire;
-
-    private long refreshTokenExpire;
+    private long refreshTokenExpire = 1000 * 60 * 60 * 24 * 7; // 7 days;
 
     private final TokenRepository tokenRepository;
 
@@ -70,23 +72,26 @@ public class JwtService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSigningKey())
-                .build()
-                .parseClaimsJws(token)
+        return Jwts.parser()
+                .setSigningKey(SECRET_KEY.getBytes(StandardCharsets.UTF_8))
+                .parseClaimsJws(token.replace("{", "").replace("}",""))
                 .getBody();
     }
 
     public String generateAccessToken(User user) {
-        return generateToken(user, accessTokenExpire);
+        long accessTokenExpire = 1000 * 60 * 60 * 24; // 1 day in ms;
+        System.out.println(accessTokenExpire);
+        Map<String, Object> claims = new HashMap<>();
+        return generateToken(claims, user.getUsername(), accessTokenExpire);
     }
 
     public String generateRefreshToken(User user) {
-        return generateToken(user, refreshTokenExpire );
+        System.out.println(refreshTokenExpire);
+        Map<String, Object> claims = new HashMap<>();
+        return generateToken(claims, user.getUsername(), refreshTokenExpire);
     }
 
-    private String generateToken(User user, long expireTime) {
+    /*private String generateToken(User user, long expireTime) {
         String token = Jwts
                 .builder()
                 .setSubject(user.getUsername())
@@ -96,6 +101,15 @@ public class JwtService {
                 .compact();
 
         return token;
+    }*/
+
+    private String generateToken(Map<String, Object> claims, String subject, Long expireTime) {
+        return Jwts.builder().setClaims(claims)
+                .setSubject(subject)
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + expireTime * 1000))
+                .signWith(SignatureAlgorithm.HS512,
+                        SECRET_KEY.getBytes(StandardCharsets.UTF_8)).compact();
     }
 
     private SecretKey getSigningKey() {
