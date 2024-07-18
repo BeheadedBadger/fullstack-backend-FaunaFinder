@@ -21,6 +21,17 @@ public class AnimalService {
         this.repo = animalRepository;
     }
 
+    public Optional<Animal> update(long id, Animal animal) {
+        Optional<Animal> model = repo.findById(id);
+        if(model.isPresent()) {
+            model.get().setName(animal.getName());
+            return model;
+        }
+        else {
+            throw new AnimalNotFoundException(id);
+        }
+    }
+
     public AnimalOutputDto create (AnimalInputDto inputDto) {
         try {
             Animal model = repo.save(AnimalMapper.fromInputDtoToModel(inputDto));
