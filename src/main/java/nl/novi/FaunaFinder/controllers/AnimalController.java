@@ -1,6 +1,7 @@
 package nl.novi.FaunaFinder.controllers;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
+import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.service.AnimalService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +10,7 @@ import jakarta.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/animals")
@@ -40,10 +42,16 @@ public class AnimalController {
         return ResponseEntity.ok().body(animalService.getAll());
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AnimalOutputDto> getAnimal(@PathVariable("id") Long animalid) {
         AnimalOutputDto optionalAnimal = animalService.get(animalid);
         
         return ResponseEntity.ok().body(optionalAnimal);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Optional<Animal>> UpdateAnimal (@PathVariable long id, @RequestBody Animal animal) {
+       Optional<Animal> optionalAnimal = animalService.update(id, animal);
+       return ResponseEntity.ok().body(optionalAnimal);
     }
 }

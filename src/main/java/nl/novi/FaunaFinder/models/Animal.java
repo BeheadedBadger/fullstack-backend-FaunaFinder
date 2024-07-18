@@ -30,6 +30,8 @@ public class Animal {
         X
     }
 
+    //@OneToOne
+    //Photo photo
     public Long getId() {
         return id;
     }
