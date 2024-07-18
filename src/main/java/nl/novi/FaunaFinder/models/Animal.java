@@ -29,9 +29,10 @@ public class Animal {
         M,
         X
     }
+  
+    @OneToOne(mappedBy = "animalOwner")
+    private Image animalPhoto;
 
-    //@OneToOne
-    //Photo photo
     public Long getId() {
         return id;
     }

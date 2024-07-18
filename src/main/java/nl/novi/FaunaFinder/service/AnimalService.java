@@ -63,4 +63,15 @@ public class AnimalService {
 
         return outputDtos;
     }
+
+    //TODO make this actually update
+    public Animal update(Long id, Animal animal) {
+        return animal;
+    }
+
+    public Animal assignPhotoToAnimal(String fileName, Long id) {
+        Animal animal = new Animal();
+
+        return animal;
+    }
 }
