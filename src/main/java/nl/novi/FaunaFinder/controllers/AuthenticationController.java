@@ -7,12 +7,10 @@ import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
 import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
+@CrossOrigin
 public class AuthenticationController {
 
     private final AuthenticationService authService;

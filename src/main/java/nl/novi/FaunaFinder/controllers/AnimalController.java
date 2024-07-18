@@ -49,7 +49,7 @@ public class AnimalController {
         return ResponseEntity.ok().body(animalService.getAll());
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<AnimalOutputDto> getAnimal(@PathVariable("id") Long animalid) {
         AnimalOutputDto optionalAnimal = animalService.get(animalid);
 
@@ -73,5 +73,11 @@ public class AnimalController {
         Animal animal = animalService.assignPhotoToAnimal(fileName, id);
         return ResponseEntity.created(URI.create(url)).body(animal);
 
+    }
+}
+
+    public ResponseEntity<Optional<Animal>> UpdateAnimal (@PathVariable long id, @RequestBody Animal animal) {
+       Optional<Animal> optionalAnimal = animalService.update(id, animal);
+       return ResponseEntity.ok().body(optionalAnimal);
     }
 }
