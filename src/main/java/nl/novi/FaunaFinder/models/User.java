@@ -40,6 +40,11 @@ public class User implements UserDetails {
     @Getter
     @OneToMany(mappedBy = "shelter")
     List<Animal> shelterAnimals;
+    @Setter
+    @Getter
+    @OneToOne
+    private Image userPhoto;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

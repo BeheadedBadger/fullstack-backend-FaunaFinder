@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.validation.Valid;
-import java.io.IOException;
+
+import javax.swing.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,14 +57,8 @@ public class AnimalController {
         return ResponseEntity.ok().body(optionalAnimal);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Optional<Animal>> UpdateAnimal(@PathVariable long id, @RequestBody Animal animal) {
-        Animal updatedAnimal = animalService.update(id, animal);
-        return ResponseEntity.ok().body(Optional.ofNullable(updatedAnimal));
-    }
-
     @PostMapping("/{id}/photo")
-    public ResponseEntity<Animal> addPhotoToAnimal(@PathVariable("id") Long id, @RequestBody MultipartFile file) throws IOException {
+    public ResponseEntity<Animal> addPhotoToAnimal(@PathVariable("id") Long id, @RequestBody MultipartFile file) throws Exception {
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/animals/")
                 .path(Objects.requireNonNull(id.toString()))
@@ -72,9 +67,12 @@ public class AnimalController {
         String fileName = photoService.storeFile(file);
         Animal animal = animalService.assignPhotoToAnimal(fileName, id);
         return ResponseEntity.created(URI.create(url)).body(animal);
-
     }
-}
+
+    @GetMapping("/{id}/photo")
+    public ResponseEntity<String> getPhoto (@PathVariable long id) throws Exception {
+        return ResponseEntity.ok().body(animalService.getImage(id));
+    }
 
     public ResponseEntity<Optional<Animal>> UpdateAnimal (@PathVariable long id, @RequestBody Animal animal) {
        Optional<Animal> optionalAnimal = animalService.update(id, animal);
