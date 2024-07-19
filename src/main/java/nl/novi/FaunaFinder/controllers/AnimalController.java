@@ -18,6 +18,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/animals")
 public class AnimalController {
     private final AnimalService animalService;

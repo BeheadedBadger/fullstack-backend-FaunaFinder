@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/animals").permitAll()
                         .requestMatchers(HttpMethod.GET, "/animals/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "users/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/animals").hasAuthority("SHELTER")
                         .requestMatchers(HttpMethod.DELETE, "/animals/**").hasAnyAuthority("ADMIN", "SHELTER")
                         .requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyAuthority("ADMIN")
