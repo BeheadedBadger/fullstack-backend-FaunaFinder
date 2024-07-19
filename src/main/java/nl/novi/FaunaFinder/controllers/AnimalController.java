@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.validation.Valid;
-import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +62,7 @@ public class AnimalController {
     }
 
     @PostMapping("/{id}/photo")
-    public ResponseEntity<Animal> addPhotoToAnimal(@PathVariable("id") Long id, @RequestBody MultipartFile file) throws IOException {
+    public ResponseEntity<Animal> addPhotoToAnimal(@PathVariable("id") Long id, @RequestBody MultipartFile file) throws Exception {
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/animals/")
                 .path(Objects.requireNonNull(id.toString()))
@@ -72,6 +71,5 @@ public class AnimalController {
         String fileName = photoService.storeFile(file);
         Animal animal = animalService.assignPhotoToAnimal(fileName, id);
         return ResponseEntity.created(URI.create(url)).body(animal);
-
     }
 }

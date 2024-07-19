@@ -1,125 +1,62 @@
 package nl.novi.FaunaFinder.models;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.List;
 
 @Entity
 @Table(name = "animals")
 public class Animal {
+    @Getter
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Id
     private Long id;
+    @Setter
+    @Getter
     private String name;
+    @Setter
+    @Getter
     private int age;
+    @Setter
+    @Getter
     @Enumerated(EnumType.STRING)
     private Animal.Sex sex;
+    @Setter
+    @Getter
     private String commonSpeciesName;
+    @Setter
+    @Getter
     private String scientificSpeciesName;
+    @Setter
+    @Getter
     private String speciesCategory;
+    @Setter
+    @Getter
     private Boolean warning;
+    @Setter
+    @Getter
     private String warningExplanation;
+    @Setter
+    @Getter
     @Column(length = 2048)
     private String description;
+    @Setter
+    @Getter
     @ManyToOne
     private User shelter;
+    @Setter
+    @Getter
     @ManyToMany
     private List<User> favourites;
+    @Setter
+    @Getter
+    @OneToOne
+    private Image animalPhoto;
 
     public enum Sex {
         F,
         M,
         X
-    }
-
-    @OneToOne(mappedBy = "animalOwner")
-    private Image animalPhoto;
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
-    }
-
-    public Sex getSex() {
-        return sex;
-    }
-
-    public void setSex(Sex sex) {
-        this.sex = sex;
-    }
-
-    public String getCommonSpeciesName() {
-        return commonSpeciesName;
-    }
-
-    public void setCommonSpeciesName(String commonSpeciesName) {
-        this.commonSpeciesName = commonSpeciesName;
-    }
-
-    public String getScientificSpeciesName() {
-        return scientificSpeciesName;
-    }
-
-    public void setScientificSpeciesName(String scientificSpeciesName) {
-        this.scientificSpeciesName = scientificSpeciesName;
-    }
-
-    public String getSpeciesCategory() { return speciesCategory; }
-
-    public void setSpeciesCategory(String speciesCategory) {
-        this.speciesCategory = speciesCategory;
-    }
-
-    public Boolean getWarning() {
-        return warning;
-    }
-
-    public void setWarning(Boolean warning) {
-        this.warning = warning;
-    }
-
-    public String getWarningExplanation() {
-        return warningExplanation;
-    }
-
-    public void setWarningExplanation(String warningExplanation) {
-        this.warningExplanation = warningExplanation;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public User getShelter() {
-        return shelter;
-    }
-
-    public void setShelter(User shelter) {
-        this.shelter = shelter;
-    }
-
-    public List<User> getFavourites() {
-        return favourites;
-    }
-
-    public void setFavourites(List<User> favourites) {
-        this.favourites = favourites;
     }
 }

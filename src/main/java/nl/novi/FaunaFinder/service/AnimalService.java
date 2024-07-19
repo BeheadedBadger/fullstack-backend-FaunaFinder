@@ -5,7 +5,9 @@ import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.exceptions.AnimalCreationException;
 import nl.novi.FaunaFinder.exceptions.AnimalNotFoundException;
 import nl.novi.FaunaFinder.models.Animal;
+import nl.novi.FaunaFinder.models.Image;
 import nl.novi.FaunaFinder.repositories.AnimalRepository;
+import nl.novi.FaunaFinder.repositories.FileUploadRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -16,9 +18,11 @@ import java.util.Optional;
 public class AnimalService {
 
     private final AnimalRepository repo;
+    private final FileUploadRepository fileRepo;
 
-    public AnimalService(AnimalRepository animalRepository) {
+    public AnimalService(AnimalRepository animalRepository, FileUploadRepository fileRepo) {
         this.repo = animalRepository;
+        this.fileRepo = fileRepo;
     }
 
     public AnimalOutputDto create (AnimalInputDto inputDto) {
@@ -58,9 +62,18 @@ public class AnimalService {
         return animal;
     }
 
-    public Animal assignPhotoToAnimal(String fileName, Long id) {
-        Animal animal = new Animal();
+    public Animal assignPhotoToAnimal(String fileName, Long id) throws Exception {
+        Optional<Animal> animal = repo.findById(id);
+        Optional<Image> image = fileRepo.findById(fileName);
+        if (image.isPresent() && animal.isPresent()) {
+            (animal.get()).setAnimalPhoto(image.get());
+            repo.save(animal.get());
+            return animal.get();
+        }
 
-        return animal;
+        throw new Exception("Failed to add image");
+
+        //TODO
+        //throw new ImageToFoundException(ImageToFoundException.getCause);
     }
 }
