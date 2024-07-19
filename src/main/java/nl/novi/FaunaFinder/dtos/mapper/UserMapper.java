@@ -17,12 +17,11 @@ public class UserMapper {
     public static UserOutputDto fromModelToOutputDto(User model) {
         UserOutputDto outputDto = new UserOutputDto();
         outputDto.setUsername(model.getUsername());
-        outputDto.setPassword(model.getPassword());
-        outputDto.setAuthorities(model.getAuthorities());
         outputDto.setRole(model.getRole());
-        outputDto.setAuthorities(model.getAuthorities());
         outputDto.setFavouriteAnimals(model.getFavouriteAnimals());
         outputDto.setDonations(model.getDonations());
+        outputDto.setSpeciality(model.getSpeciality());
+        outputDto.setShelterAnimals(model.getShelterAnimals());
         return outputDto;
     }
 }
