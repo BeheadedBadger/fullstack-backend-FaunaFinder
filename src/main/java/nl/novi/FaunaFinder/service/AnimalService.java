@@ -78,11 +78,25 @@ public class AnimalService {
         Optional<Image> image = fileRepo.findById(fileName);
         if (image.isPresent() && animal.isPresent()) {
             (animal.get()).setAnimalPhoto(image.get());
+            (image.get()).setAnimalOwner(animal.get());
+            fileRepo.save(image.get());
             repo.save(animal.get());
             return animal.get();
         }
 
         throw new Exception("Failed to add image");
+
+        //TODO
+        //throw new ImageToFoundException(ImageToFoundException.getCause);
+    }
+
+    public String getImage(Long id) throws Exception {
+        Optional<Animal> animal = repo.findById(id);
+        if (animal.isPresent()) {
+            return animal.get().getAnimalPhoto().getFileName();
+        }
+
+        throw new Exception("Failed to get image");
 
         //TODO
         //throw new ImageToFoundException(ImageToFoundException.getCause);
