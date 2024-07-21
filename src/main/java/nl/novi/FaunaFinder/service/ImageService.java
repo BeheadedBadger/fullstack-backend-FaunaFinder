@@ -6,6 +6,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -13,9 +14,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 
 @Service
+@CrossOrigin
 public class ImageService {
 
     private final FileUploadRepository repo;
@@ -29,30 +30,34 @@ public class ImageService {
         Files.createDirectories(storagePath);
     }
 
-    public String storeFile(MultipartFile file) throws IOException {
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        Path filePath = Paths.get(storageLocation + "\\" +fileName).toAbsolutePath().normalize();
+    public String storeFile(String id, MultipartFile file) throws IOException {
+        String fileName = StringUtils.cleanPath(id + "_" + file.getOriginalFilename());
+        Path filePath = Paths.get(storageLocation + "\\" + fileName).toAbsolutePath().normalize();
 
         Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         repo.save(new Image(fileName));
         return fileName;
     }
 
-    public Resource downloadFile(String fileName) {
-        Path filePath = Paths.get(storageLocation).toAbsolutePath().resolve(fileName);
+
+    public Resource downLoadFile(String fileName) {
+
+        Path path = Paths.get(storageLocation).toAbsolutePath().resolve(fileName);
+
         Resource resource;
 
         try {
-            resource = new UrlResource(filePath.toUri());
+            resource = new UrlResource(path.toUri());
         } catch (MalformedURLException e) {
-            throw new RuntimeException("Issue with retrieving file", e);
+            throw new RuntimeException("Issue in reading the file", e);
         }
 
-        if (resource.exists() && resource.isReadable()) {
+        if(resource.exists()&& resource.isReadable()) {
             return resource;
-        }
-        else {
-            throw new RuntimeException("The file doesn't exist, or can't be read");
+        } else {
+            throw new RuntimeException("the file doesn't exist or not readable");
+            //TODO
+            //throw new ImageToFoundException(ImageToFoundException.getCause);
         }
     }
 }

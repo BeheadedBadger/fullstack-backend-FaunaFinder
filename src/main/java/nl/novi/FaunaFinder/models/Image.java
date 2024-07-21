@@ -13,12 +13,6 @@ public class Image {
     @Id
     private String fileName;
 
-    @OneToOne(mappedBy = "animalPhoto")
-    private Animal animalOwner;
-
-    @OneToOne(mappedBy = "userPhoto")
-    private User userOwner;
-
     public Image(String fileName) {
         this.fileName = fileName;
     }

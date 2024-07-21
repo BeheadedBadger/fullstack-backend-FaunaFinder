@@ -78,7 +78,6 @@ public class AnimalService {
         Optional<Image> image = fileRepo.findById(fileName);
         if (image.isPresent() && animal.isPresent()) {
             (animal.get()).setAnimalPhoto(image.get());
-            (image.get()).setAnimalOwner(animal.get());
             fileRepo.save(image.get());
             repo.save(animal.get());
             return animal.get();

@@ -29,7 +29,7 @@ public class AnimalMapper {
         outputDto.setWarning(model.getWarning());
         outputDto.setWarningExplanation(model.getWarningExplanation());
         outputDto.setDescription(model.getDescription());
-        outputDto.setShelter(model.getShelter());
+        outputDto.setShelter(model.getShelter().getUsername());
 
         return outputDto;
     }

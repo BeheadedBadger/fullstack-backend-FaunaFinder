@@ -27,6 +27,9 @@ public class User implements UserDetails {
     @Getter
     @Enumerated(EnumType.STRING)
     Role role;
+    @Getter
+    @OneToOne
+    private Image userPhoto;
 
     //Shelter-specific
     @Getter
@@ -34,9 +37,6 @@ public class User implements UserDetails {
     @Getter
     @OneToMany(mappedBy = "shelter")
     List<Animal> shelterAnimals;
-    @Getter
-    @OneToOne
-    private Image userPhoto;
 
 
     @Override
