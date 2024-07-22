@@ -1,5 +1,7 @@
 package nl.novi.FaunaFinder.service;
+import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
 import nl.novi.FaunaFinder.dtos.mapper.UserMapper;
+import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Image;
@@ -17,6 +19,8 @@ import javax.swing.text.html.Option;
 import java.net.MalformedURLException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,7 +51,19 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    public User assignPhotoToUser(String fileName, String id) throws Exception {
+    public List<UserOutputDto> getAll () {
+        List<User> models = repo.findAll();
+        List<UserOutputDto> outputDtos = new ArrayList<>();
+
+        for (User u : models) {
+            outputDtos.add(UserMapper.fromModelToOutputDto(u));
+        }
+
+        return outputDtos;
+    }
+
+
+public User assignPhotoToUser(String fileName, String id) throws Exception {
         Optional<User> user = repo.findByUsername(id);
         Optional<Image> image = fileRepo.findById(fileName);
         if (image.isPresent() && user.isPresent()) {

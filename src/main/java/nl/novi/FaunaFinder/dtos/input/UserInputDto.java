@@ -9,7 +9,5 @@ public class UserInputDto {
     public String username;
     public String password;
     public Role role;
-
-    //Shelter
     public String speciality;
 }

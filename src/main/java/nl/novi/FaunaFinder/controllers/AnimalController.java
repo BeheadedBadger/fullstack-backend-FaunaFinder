@@ -9,8 +9,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import jakarta.validation.Valid;
-
-import javax.swing.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
