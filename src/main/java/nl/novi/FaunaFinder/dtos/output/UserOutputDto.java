@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Donation;
+import nl.novi.FaunaFinder.models.Image;
 import nl.novi.FaunaFinder.models.Role;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -17,6 +18,7 @@ public class UserOutputDto {
     List<Animal> favouriteAnimals;
     List<Donation> donations;
     Role role;
+    String userPhoto;
     String speciality;
     List<Animal> shelterAnimals;
 }

@@ -16,6 +16,6 @@ public class AnimalOutputDto {
     private Boolean warning;
     private String warningExplanation;
     private String description;
-    private User shelter;
+    private String shelter;
 
 }

@@ -65,7 +65,7 @@ public class AnimalController {
                 .path(Objects.requireNonNull(id.toString()))
                 .path("/photo")
                 .toString();
-        String fileName = photoService.storeFile(file);
+        String fileName = photoService.storeFile(String.valueOf(id), file);
         Animal animal = animalService.assignPhotoToAnimal(fileName, id);
         return ResponseEntity.created(URI.create(url)).body(animal);
     }
@@ -75,6 +75,7 @@ public class AnimalController {
         return ResponseEntity.ok().body(animalService.getImage(id));
     }
 
+    @PutMapping("/{id}")
     public ResponseEntity<Optional<Animal>> UpdateAnimal (@PathVariable long id, @RequestBody Animal animal) {
        Optional<Animal> optionalAnimal = animalService.update(id, animal);
        return ResponseEntity.ok().body(optionalAnimal);
