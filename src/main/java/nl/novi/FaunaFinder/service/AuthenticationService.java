@@ -60,16 +60,12 @@ public class AuthenticationService {
         user.setRole(request.role);
 
         user = repository.save(user);
-      /*  String image = imgService.storeFile(request.userPhoto);
-        userService.assignPhotoToUser(request.username, image);*/
-
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
         saveUserToken(accessToken, refreshToken, user);
 
         return new AuthenticationResponse(accessToken, refreshToken, "User registration was successful");
-
     }
 
     public AuthenticationResponse authenticate(UserInputDto request) {

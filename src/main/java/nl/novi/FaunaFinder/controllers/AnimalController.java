@@ -1,6 +1,7 @@
 package nl.novi.FaunaFinder.controllers;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
+import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.service.ImageService;
 import nl.novi.FaunaFinder.service.AnimalService;
@@ -14,7 +15,6 @@ import javax.swing.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @RestController
@@ -22,18 +22,21 @@ import java.util.Optional;
 @RequestMapping("/animals")
 public class AnimalController {
     private final AnimalService animalService;
-    private final ImageService photoService;
+    private final ImageService imageService;
 
-    public AnimalController(AnimalService animalService, ImageService photoService) {
+    public AnimalController(AnimalService animalService, ImageService imageService) {
         this.animalService = animalService;
-        this.photoService = photoService;
+        this.imageService = imageService;
     }
 
     @PostMapping
-    public ResponseEntity<AnimalOutputDto> addAnimal(@Valid @RequestBody AnimalInputDto inputDto) {
-        AnimalOutputDto outPutDto = animalService.create(inputDto);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(outPutDto.getId()).toUri();
-        return ResponseEntity.created(uri).body(outPutDto);
+    public ResponseEntity<AnimalOutputDto> addAnimal(@RequestBody AnimalInputDto inputDto ) throws Exception {
+        try {
+            return ResponseEntity.ok(animalService.create(inputDto));
+        }
+        catch(AuthenticationFailedException e) {
+            throw new AuthenticationFailedException(e.getCause());
+        }
     }
 
     @PostMapping("/batch")
@@ -62,10 +65,12 @@ public class AnimalController {
     public ResponseEntity<Animal> addPhotoToAnimal(@PathVariable("id") Long id, @RequestBody MultipartFile file) throws Exception {
         String url = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/animals/")
-                .path(Objects.requireNonNull(id.toString()))
+                .path(id.toString())
                 .path("/photo")
                 .toString();
-        String fileName = photoService.storeFile(String.valueOf(id), file);
+        String name = id.toString();
+        System.out.println(name);
+        String fileName = imageService.storeFile(id.toString(), file);
         Animal animal = animalService.assignPhotoToAnimal(fileName, id);
         return ResponseEntity.created(URI.create(url)).body(animal);
     }

@@ -1,14 +1,21 @@
 package nl.novi.FaunaFinder.service;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
+import nl.novi.FaunaFinder.dtos.input.UserInputDto;
 import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
+import nl.novi.FaunaFinder.dtos.mapper.UserMapper;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
+import nl.novi.FaunaFinder.dtos.output.AuthenticationResponse;
 import nl.novi.FaunaFinder.exceptions.AnimalCreationException;
 import nl.novi.FaunaFinder.exceptions.AnimalNotFoundException;
+import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Image;
+import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.repositories.AnimalRepository;
 import nl.novi.FaunaFinder.repositories.FileUploadRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,18 +42,21 @@ public class AnimalService {
             throw new AnimalNotFoundException(id);
         }
     }
+    /*
+        user = repository.save(user);
+        String accessToken = jwtService.generateAccessToken(user);
+        String refreshToken = jwtService.generateRefreshToken(user);
+
+        saveUserToken(accessToken, refreshToken, user);
+
+        return new AuthenticationResponse(accessToken, refreshToken, "User registration was successful");
+    }*/
 
     public AnimalOutputDto create (AnimalInputDto inputDto) {
-        try {
-            Animal model = repo.save(AnimalMapper.fromInputDtoToModel(inputDto));
-            return AnimalMapper.fromModelToOutputDto(model);
-        }
-        catch (AnimalCreationException e) {
-            throw new AnimalCreationException(e.getCause());
-        }
-
+        Animal model = AnimalMapper.fromInputDtoToModel(inputDto);
+        repo.save(model);
+        return AnimalMapper.fromModelToOutputDto(model);
     }
-
     public AnimalOutputDto get (Long id) {
         Optional<Animal> model = repo.findById(id);
         if(model.isPresent()) {
@@ -91,7 +101,7 @@ public class AnimalService {
 
     public String getImage(Long id) throws Exception {
         Optional<Animal> animal = repo.findById(id);
-        if (animal.isPresent()) {
+        if (animal.isPresent() && animal.get().getAnimalPhoto() != null) {
             return animal.get().getAnimalPhoto().getFileName();
         }
 

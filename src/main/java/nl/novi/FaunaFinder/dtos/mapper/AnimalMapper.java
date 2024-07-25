@@ -2,8 +2,16 @@ package nl.novi.FaunaFinder.dtos.mapper;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.models.Animal;
+import nl.novi.FaunaFinder.repositories.UserRepository;
 
 public class AnimalMapper {
+
+    private final UserRepository userRepo;
+
+    public AnimalMapper(UserRepository userRepo) {
+        this.userRepo = userRepo;
+    }
+
     public static Animal fromInputDtoToModel (AnimalInputDto inputDto) {
         Animal model = new Animal();
         model.setName(inputDto.name);
@@ -14,7 +22,8 @@ public class AnimalMapper {
         model.setWarning(inputDto.warning);
         model.setWarningExplanation(inputDto.warningExplanation);
         model.setDescription(inputDto.description);
-
+        model.setSpeciesCategory(inputDto.category);
+        model.setShelter(inputDto.shelter);
         return model;
     }
 
@@ -29,8 +38,10 @@ public class AnimalMapper {
         outputDto.setWarning(model.getWarning());
         outputDto.setWarningExplanation(model.getWarningExplanation());
         outputDto.setDescription(model.getDescription());
-        outputDto.setShelter(model.getShelter().getUsername());
-
+        outputDto.setShelter(model.getShelter());
+        if (model.getAnimalPhoto() != null && model.getAnimalPhoto().getFileName() != null) {
+            outputDto.setAnimalPhoto(model.getAnimalPhoto().getFileName());
+        }
         return outputDto;
     }
 }

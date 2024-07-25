@@ -62,15 +62,15 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/users/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/animals").hasAuthority("SHELTER")
+                        .requestMatchers(HttpMethod.POST, "/animals/**").hasAuthority("SHELTER")
                         .requestMatchers(HttpMethod.DELETE, "/animals/**").hasAnyAuthority("ADMIN", "SHELTER")
                         .requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyAuthority("ADMIN")
                         .requestMatchers("/**").authenticated()
                         .anyRequest().denyAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(csrf -> csrf.disable())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class);
-
+                .csrf(csrf -> csrf.disable());
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

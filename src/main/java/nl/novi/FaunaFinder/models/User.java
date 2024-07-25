@@ -35,7 +35,8 @@ public class User implements UserDetails {
     @Getter
     String speciality;
     @Getter
-    @OneToMany(mappedBy = "shelter")
+    @OneToMany
+    @JoinColumn(name = "animal_id")
     List<Animal> shelterAnimals;
 
 
