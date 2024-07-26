@@ -5,6 +5,7 @@ import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.service.ImageService;
 import nl.novi.FaunaFinder.service.AnimalService;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -76,7 +77,7 @@ public class AnimalController {
     }
 
     @GetMapping("/{id}/photo")
-    public ResponseEntity<String> getPhoto (@PathVariable long id) throws Exception {
+    public ResponseEntity<Resource> getPhoto (@PathVariable long id) throws Exception {
         return ResponseEntity.ok().body(animalService.getImage(id));
     }
 

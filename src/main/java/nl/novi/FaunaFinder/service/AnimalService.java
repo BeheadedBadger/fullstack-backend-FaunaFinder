@@ -13,7 +13,9 @@ import nl.novi.FaunaFinder.models.Image;
 import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.repositories.AnimalRepository;
 import nl.novi.FaunaFinder.repositories.FileUploadRepository;
+import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -26,10 +28,12 @@ public class AnimalService {
 
     private final AnimalRepository repo;
     private final FileUploadRepository fileRepo;
+    private final ImageService imgService;
 
-    public AnimalService(AnimalRepository animalRepository, FileUploadRepository fileRepo) {
+    public AnimalService(AnimalRepository animalRepository, FileUploadRepository fileRepo, ImageService imgService) {
         this.repo = animalRepository;
         this.fileRepo = fileRepo;
+        this.imgService = imgService;
     }
 
     public Optional<Animal> update(long id, Animal animal) {
@@ -42,16 +46,7 @@ public class AnimalService {
             throw new AnimalNotFoundException(id);
         }
     }
-    /*
-        user = repository.save(user);
-        String accessToken = jwtService.generateAccessToken(user);
-        String refreshToken = jwtService.generateRefreshToken(user);
-
-        saveUserToken(accessToken, refreshToken, user);
-
-        return new AuthenticationResponse(accessToken, refreshToken, "User registration was successful");
-    }*/
-
+    
     public AnimalOutputDto create (AnimalInputDto inputDto) {
         Animal model = AnimalMapper.fromInputDtoToModel(inputDto);
         repo.save(model);
@@ -99,15 +94,15 @@ public class AnimalService {
         //throw new ImageToFoundException(ImageToFoundException.getCause);
     }
 
-    public String getImage(Long id) throws Exception {
-        Optional<Animal> animal = repo.findById(id);
-        if (animal.isPresent() && animal.get().getAnimalPhoto() != null) {
-            return animal.get().getAnimalPhoto().getFileName();
+    public Resource getImage(long id) throws Exception {
+        Optional<Animal> optionalAnimal = repo.findById(id);
+        if(optionalAnimal.isEmpty()){
+            throw new UsernameNotFoundException("Can't find animal with id " + id);
         }
-
-        throw new Exception("Failed to get image");
-
-        //TODO
-        //throw new ImageToFoundException(ImageToFoundException.getCause);
+        Image photo = optionalAnimal.get().getAnimalPhoto();
+        if(photo == null){
+            throw new Exception("No photo found");
+        }
+        return imgService.downLoadFile(photo.getFileName());
     }
 }
