@@ -1,4 +1,5 @@
 package nl.novi.FaunaFinder.models;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,7 +37,7 @@ public class User implements UserDetails {
     String speciality;
     @Getter
     @OneToMany
-    @JoinColumn(name = "animal_id")
+    @JsonIgnoreProperties(value = {"shelter"})
     List<Animal> shelterAnimals;
 
 

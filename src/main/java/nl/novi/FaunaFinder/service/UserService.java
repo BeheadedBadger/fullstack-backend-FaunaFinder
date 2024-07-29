@@ -4,19 +4,15 @@ import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Image;
 import nl.novi.FaunaFinder.models.User;
+import nl.novi.FaunaFinder.repositories.AnimalRepository;
 import nl.novi.FaunaFinder.repositories.FileUploadRepository;
 import nl.novi.FaunaFinder.repositories.UserRepository;
 import org.springframework.core.io.Resource;
-import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Optional;
 
 @Service
@@ -25,11 +21,13 @@ public class UserService implements UserDetailsService {
     private final UserRepository repo;
     private final FileUploadRepository fileRepo;
     private final ImageService imgService;
+    private final AnimalRepository animalRepo;
 
-    public UserService(UserRepository repository, FileUploadRepository fileRepo, ImageService imgService) {
+    public UserService(UserRepository repository, FileUploadRepository fileRepo, ImageService imgService, AnimalRepository animalRepo) {
         this.repo = repository;
         this.fileRepo = fileRepo;
         this.imgService = imgService;
+        this.animalRepo = animalRepo;
     }
 
     @Override
@@ -57,6 +55,20 @@ public class UserService implements UserDetailsService {
             return user.get();
         }
         return null;
+    }
+
+    public Optional<User> assignAnimalToShelter(String userId, Long animalId) {
+        Optional<User> user = repo.findByUsername(userId);
+        Optional<Animal> animal = animalRepo.findById(animalId);
+        if (animal.isPresent() && user.isPresent()) {
+            user.get().getShelterAnimals().add(animal.get());
+            animal.get().setShelter(user.get());
+
+            repo.save(user.get());
+            animalRepo.save(animal.get());
+        }
+
+        return user;
     }
 
     public Resource getImage(String username) throws Exception {

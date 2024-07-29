@@ -1,4 +1,5 @@
 package nl.novi.FaunaFinder.models;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -25,6 +26,7 @@ public class Animal {
     @Column(length = 2048)
     private String description;
     @ManyToOne
+    @JsonIgnoreProperties(value = {"shelterAnimals"})
     private User shelter;
     @ManyToMany
     private List<User> favourites;

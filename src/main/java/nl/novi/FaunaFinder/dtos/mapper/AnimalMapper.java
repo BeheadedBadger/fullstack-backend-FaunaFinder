@@ -39,6 +39,7 @@ public class AnimalMapper {
         outputDto.setWarningExplanation(model.getWarningExplanation());
         outputDto.setDescription(model.getDescription());
         outputDto.setShelter(model.getShelter());
+        outputDto.setCategory(model.getSpeciesCategory());
         if (model.getAnimalPhoto() != null && model.getAnimalPhoto().getFileName() != null) {
             outputDto.setAnimalPhoto(model.getAnimalPhoto().getFileName());
         }

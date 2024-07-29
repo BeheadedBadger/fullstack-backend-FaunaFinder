@@ -1,8 +1,6 @@
 package nl.novi.FaunaFinder.controllers;
 import jakarta.servlet.http.HttpServletRequest;
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
-import nl.novi.FaunaFinder.models.Animal;
-import nl.novi.FaunaFinder.models.Image;
 import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.service.ImageService;
 import nl.novi.FaunaFinder.service.UserService;
@@ -16,9 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
-import java.nio.file.Path;
-import java.util.Objects;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -68,6 +64,12 @@ public class UserController {
                 .contentType(MediaType.parseMediaType(mimeType))
                 .header(HttpHeaders.CONTENT_DISPOSITION, "inline;fileName=" + resource.getFilename())
                 .body(resource);
+    }
+
+    @PutMapping("/{id}/{animalId}")
+    public ResponseEntity<Optional<User>> addAnimalToShelter(@PathVariable("id") String id, @PathVariable("animalId") Long animalId) throws Exception {
+        Optional<User> shelter = userService.assignAnimalToShelter(id, animalId);
+        return ResponseEntity.ok().body(shelter);
     }
 
     //TODO edit user
