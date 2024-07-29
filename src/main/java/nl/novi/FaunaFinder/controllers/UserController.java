@@ -1,5 +1,6 @@
 package nl.novi.FaunaFinder.controllers;
 import jakarta.servlet.http.HttpServletRequest;
+import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
 import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.service.ImageService;
@@ -14,6 +15,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -27,6 +29,11 @@ public class UserController {
     public UserController(UserService userService, ImageService imageService) {
         this.userService = userService;
         this.imageService = imageService;
+    }
+
+    @GetMapping
+    public ResponseEntity<List<UserOutputDto>> getAllUsers() {
+        return ResponseEntity.ok().body(userService.getAll());
     }
 
     @GetMapping("/{username}")

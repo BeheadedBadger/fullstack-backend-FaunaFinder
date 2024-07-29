@@ -1,5 +1,7 @@
 package nl.novi.FaunaFinder.service;
+import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
 import nl.novi.FaunaFinder.dtos.mapper.UserMapper;
+import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Image;
@@ -13,6 +15,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -43,6 +47,17 @@ public class UserService implements UserDetailsService {
         } else {
             throw new UsernameNotFoundException(username);
         }
+    }
+
+    public List<UserOutputDto> getAll() {
+        List<User> models = repo.findAll();
+        List<UserOutputDto> outputDtos = new ArrayList<>();
+
+        for (User u : models) {
+            outputDtos.add(UserMapper.fromModelToOutputDto(u));
+        }
+
+        return outputDtos;
     }
 
     public User assignPhotoToUser(String fileName, String id) throws Exception {

@@ -30,7 +30,9 @@ public class UserMapper {
         outputDto.setDonations(model.getDonations());
         outputDto.setSpeciality(model.getSpeciality());
         outputDto.setShelterAnimals(model.getShelterAnimals());
-        outputDto.setUserPhoto(model.getUserPhoto().getFileName());
+        if (model.getUserPhoto() != null) {
+            outputDto.setUserPhoto(model.getUserPhoto().getFileName());
+        }
         return outputDto;
     }
 }
