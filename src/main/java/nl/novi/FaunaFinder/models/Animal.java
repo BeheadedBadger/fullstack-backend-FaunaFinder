@@ -1,10 +1,12 @@
 package nl.novi.FaunaFinder.models;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -25,11 +27,12 @@ public class Animal {
     private String warningExplanation;
     @Column(length = 2048)
     private String description;
+    @JsonBackReference (value="shelterAnimals")
     @ManyToOne
-    @JsonIgnoreProperties(value = {"shelterAnimals"})
     private User shelter;
-    @ManyToMany
-    private List<User> favourites;
+    @JsonBackReference (value="favouriteAnimals")
+    @ManyToMany (mappedBy = "favouriteAnimals")
+    private Set<User> favourites;
     @OneToOne
     private Image animalPhoto;
 }

@@ -5,6 +5,8 @@ import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Sex;
 import nl.novi.FaunaFinder.models.User;
 
+import java.util.Set;
+
 @Setter
 @Getter
 public class AnimalOutputDto {
@@ -18,6 +20,7 @@ public class AnimalOutputDto {
     private String warningExplanation;
     private String description;
     private User shelter;
+    private Set<User> favourites;
     private String category;
     private String animalPhoto;
 }

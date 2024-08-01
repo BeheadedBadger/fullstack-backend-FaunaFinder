@@ -24,6 +24,7 @@ public class UserMapper {
 
     public static UserOutputDto fromModelToOutputDto(User model) {
         UserOutputDto outputDto = new UserOutputDto();
+        outputDto.setId(model.getId());
         outputDto.setUsername(model.getUsername());
         outputDto.setRole(model.getRole());
         outputDto.setFavouriteAnimals(model.getFavouriteAnimals());

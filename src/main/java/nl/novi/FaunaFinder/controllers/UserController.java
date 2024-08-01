@@ -1,6 +1,6 @@
 package nl.novi.FaunaFinder.controllers;
 import jakarta.servlet.http.HttpServletRequest;
-import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
+import nl.novi.FaunaFinder.dtos.mapper.UserMapper;
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
 import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.service.ImageService;
@@ -74,9 +74,25 @@ public class UserController {
     }
 
     @PutMapping("/{id}/{animalId}")
-    public ResponseEntity<Optional<User>> addAnimalToShelter(@PathVariable("id") String id, @PathVariable("animalId") Long animalId) throws Exception {
+    public ResponseEntity<UserOutputDto> addAnimalToShelter(@PathVariable("id") String id, @PathVariable("animalId") Long animalId) throws Exception {
         Optional<User> shelter = userService.assignAnimalToShelter(id, animalId);
-        return ResponseEntity.ok().body(shelter);
+        if (shelter.isPresent()) {
+            UserOutputDto outputDto = UserMapper.fromModelToOutputDto(shelter.get());
+            return ResponseEntity.ok().body(outputDto);
+        }
+
+        throw new Exception("Failed to add animal to shelter");
+    }
+
+    @PutMapping("fav/{id}/{animalId}")
+    public ResponseEntity<UserOutputDto> addAnimalToFavs(@PathVariable("id") String id, @PathVariable("animalId") Long animalId) throws Exception {
+        Optional<User> user = userService.assignAnimalToFavourites(id, animalId);
+        if (user.isPresent()) {
+            UserOutputDto outputDto = UserMapper.fromModelToOutputDto(user.get());
+            return ResponseEntity.ok().body(outputDto);
+        }
+
+        throw new Exception("Failed to add animal to favourites");
     }
 
     //TODO edit user
