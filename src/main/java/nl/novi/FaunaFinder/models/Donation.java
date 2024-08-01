@@ -3,6 +3,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Set;
+
 @Getter
 @Setter
 @Entity
@@ -12,8 +14,8 @@ public class Donation {
     @Id
     Long id;
     int amount;
-    @ManyToOne
-    User shelter;
+    @OneToMany
+    Set<User> shelters;
     @ManyToOne
     User user;
 }

@@ -10,12 +10,14 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Setter
 @Getter
 public class UserOutputDto {
+    Long id;
     String username;
-    List<Animal> favouriteAnimals;
+    Set<Animal> favouriteAnimals;
     List<Donation> donations;
     Role role;
     String userPhoto;

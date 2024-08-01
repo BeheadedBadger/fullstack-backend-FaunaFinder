@@ -1,7 +1,5 @@
 package nl.novi.FaunaFinder.service;
-import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
 import nl.novi.FaunaFinder.dtos.mapper.UserMapper;
-import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Image;
@@ -79,6 +77,19 @@ public class UserService implements UserDetailsService {
             user.get().getShelterAnimals().add(animal.get());
             animal.get().setShelter(user.get());
 
+            repo.save(user.get());
+            animalRepo.save(animal.get());
+        }
+
+        return user;
+    }
+
+    public Optional<User> assignAnimalToFavourites(String userId, Long animalId) {
+        Optional<User> user = repo.findByUsername(userId);
+        Optional<Animal> animal = animalRepo.findById(animalId);
+        if (animal.isPresent() && user.isPresent()) {
+            user.get().getFavouriteAnimals().add(animal.get());
+            animal.get().getFavourites().add(user.get());
             repo.save(user.get());
             animalRepo.save(animal.get());
         }
