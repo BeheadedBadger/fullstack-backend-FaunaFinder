@@ -95,6 +95,16 @@ public class UserController {
         throw new Exception("Failed to add animal to favourites");
     }
 
+    @DeleteMapping("fav/{id}/{animalId}")
+    public ResponseEntity<UserOutputDto> removeAnimalFromFavs(@PathVariable("id") String id, @PathVariable("animalId") Long animalId) throws Exception {
+        Optional<User> user = userService.removeAnimalFromFavourites(id, animalId);
+        if (user.isPresent()) {
+            UserOutputDto outputDto = UserMapper.fromModelToOutputDto(user.get());
+            return ResponseEntity.ok().body(outputDto);
+        }
+        throw new Exception("Failed to remove animal from favourites");
+    }
+
     //TODO edit user
     //TODO delete user
     //TODO upgrade user roles

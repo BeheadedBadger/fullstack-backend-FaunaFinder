@@ -97,6 +97,22 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
+    public Optional<User> removeAnimalFromFavourites(String userId, Long animalId) {
+        Optional<User> user = repo.findByUsername(userId);
+        Optional<Animal> animal = animalRepo.findById(animalId);
+        if (animal.isPresent() && user.isPresent()) {
+            animal.get().getFavourites().removeIf(
+                    userinfavs -> userinfavs.getUsername().equals(userId));
+            animalRepo.save(animal.get());
+
+            user.get().getFavouriteAnimals().removeIf(
+                    animalinfavs -> animalinfavs.getId().equals(animalId));
+            repo.save(user.get());
+        }
+
+        return (user);
+    }
+
     public Resource getImage(String username) throws Exception {
             Optional<User> optionalUser = repo.findByUsername(username);
             if(optionalUser.isEmpty()){
