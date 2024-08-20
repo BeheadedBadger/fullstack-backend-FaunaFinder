@@ -9,6 +9,7 @@ import nl.novi.FaunaFinder.models.User;
 public class DonationOutputDto {
     Long id;
     int amount;
+    String frequency;
     User shelter;
     User user;
 

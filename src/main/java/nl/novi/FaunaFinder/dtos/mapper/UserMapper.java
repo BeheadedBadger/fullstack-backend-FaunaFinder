@@ -7,12 +7,6 @@ import nl.novi.FaunaFinder.service.ImageService;
 
 public class UserMapper {
 
-    private final ImageService imgService;
-
-    public UserMapper(ImageService imgService) {
-        this.imgService = imgService;
-    }
-
     public static User fromInputDtoToModel(UserInputDto inputDto) {
         User model = new User();
         model.setUsername(inputDto.username);

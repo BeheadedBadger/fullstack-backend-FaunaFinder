@@ -14,8 +14,9 @@ public class Donation {
     @Id
     Long id;
     int amount;
-    @OneToMany
-    Set<User> shelters;
+    String frequency;
+    @ManyToOne
+    User shelter;
     @ManyToOne
     User user;
 }
