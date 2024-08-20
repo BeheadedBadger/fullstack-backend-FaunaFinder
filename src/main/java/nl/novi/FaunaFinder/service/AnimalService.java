@@ -46,6 +46,17 @@ public class AnimalService {
             throw new AnimalNotFoundException(id);
         }
     }
+
+    public String delete (long id) {
+        Optional<Animal> animal = repo.findById(id);
+        if (animal.isPresent()) {
+            repo.delete(animal.get());
+            return "Animal removed successfully";
+        }
+        else {
+            return "Could not find animal with id: " + id;
+        }
+    }
     
     public AnimalOutputDto create (AnimalInputDto inputDto) {
         Animal model = AnimalMapper.fromInputDtoToModel(inputDto);
