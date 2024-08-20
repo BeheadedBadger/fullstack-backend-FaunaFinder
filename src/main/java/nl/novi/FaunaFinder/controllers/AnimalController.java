@@ -86,4 +86,10 @@ public class AnimalController {
        Optional<Animal> optionalAnimal = animalService.update(id, animal);
        return ResponseEntity.ok().body(optionalAnimal);
     }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> DeleteAnimal (@PathVariable long id) {
+        String response = animalService.delete(id);
+        return ResponseEntity.ok().body(response);
+    }
 }
