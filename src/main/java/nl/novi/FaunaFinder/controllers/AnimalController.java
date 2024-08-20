@@ -35,8 +35,8 @@ public class AnimalController {
         try {
             return ResponseEntity.ok(animalService.create(inputDto));
         }
-        catch(AuthenticationFailedException e) {
-            throw new AuthenticationFailedException(e.getCause());
+        catch(Exception e) {
+            throw new Exception(e.getMessage());
         }
     }
 
