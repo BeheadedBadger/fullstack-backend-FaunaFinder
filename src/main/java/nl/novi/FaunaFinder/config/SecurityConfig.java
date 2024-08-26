@@ -1,5 +1,6 @@
 package nl.novi.FaunaFinder.config;
 import nl.novi.FaunaFinder.filter.JwtAuthenticationFilter;
+import nl.novi.FaunaFinder.repositories.FileUploadRepository;
 import nl.novi.FaunaFinder.repositories.UserRepository;
 import nl.novi.FaunaFinder.service.JwtService;
 import nl.novi.FaunaFinder.service.UserService;
@@ -15,6 +16,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
@@ -32,13 +34,16 @@ public class SecurityConfig {
 
     private final JwtService jwtService;
 
+    private final FileUploadRepository fileRepo;
 
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                          CustomLogoutHandler logoutHandler, UserRepository userRepository, JwtService jwtService) {
+
+    public SecurityConfig(UserService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter,
+                          CustomLogoutHandler logoutHandler, UserRepository userRepository, JwtService jwtService, FileUploadRepository fileRepo) {
+        this.userDetailsService = userDetailsService;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
-        this.userDetailsService = new UserService(this.userRepository);
+        this.fileRepo = fileRepo;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.logoutHandler = logoutHandler;
     }
@@ -47,21 +52,26 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/login").permitAll()
                         .requestMatchers(HttpMethod.POST, "/register").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/donate/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/animals").permitAll()
                         .requestMatchers(HttpMethod.GET, "/animals/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/users").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/photo").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/users/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/users/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/animals").hasAuthority("SHELTER")
+                        .requestMatchers(HttpMethod.POST, "/animals/**").hasAuthority("SHELTER")
                         .requestMatchers(HttpMethod.DELETE, "/animals/**").hasAnyAuthority("ADMIN", "SHELTER")
-                        .requestMatchers(HttpMethod.DELETE, "/users/**").hasAnyAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.DELETE, "/users/**").authenticated()
                         .requestMatchers("/**").authenticated()
                         .anyRequest().denyAll()
                 )
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .csrf(csrf -> csrf.disable())
-                .addFilterBefore(new JwtAuthenticationFilter(jwtService, userDetailsService), UsernamePasswordAuthenticationFilter.class);
-
+                .csrf(csrf -> csrf.disable());
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

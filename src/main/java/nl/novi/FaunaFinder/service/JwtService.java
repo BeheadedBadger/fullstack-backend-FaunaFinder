@@ -1,17 +1,12 @@
 package nl.novi.FaunaFinder.service;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.Setter;
 import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.repositories.TokenRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import nl.novi.FaunaFinder.utils.RandomStringGenerator;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import javax.crypto.SecretKey;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +19,7 @@ public class JwtService {
 
     private final static String SECRET_KEY = getGeneratedString();
 
+    @Setter
     private long refreshTokenExpire = 1000 * 60 * 60 * 24 * 7; // 7 days;
 
     private final TokenRepository tokenRepository;
@@ -91,18 +87,6 @@ public class JwtService {
         return generateToken(claims, user.getUsername(), refreshTokenExpire);
     }
 
-    /*private String generateToken(User user, long expireTime) {
-        String token = Jwts
-                .builder()
-                .setSubject(user.getUsername())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + expireTime ))
-                .signWith(getSigningKey())
-                .compact();
-
-        return token;
-    }*/
-
     private String generateToken(Map<String, Object> claims, String subject, Long expireTime) {
         return Jwts.builder().setClaims(claims)
                 .setSubject(subject)
@@ -110,14 +94,5 @@ public class JwtService {
                 .setExpiration(new Date(System.currentTimeMillis() + expireTime * 1000))
                 .signWith(SignatureAlgorithm.HS512,
                         SECRET_KEY.getBytes(StandardCharsets.UTF_8)).compact();
-    }
-
-    private SecretKey getSigningKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
-        return Keys.hmacShaKeyFor(keyBytes);
-    }
-
-    public void setRefreshTokenExpire(long refreshTokenExpire) {
-        this.refreshTokenExpire = refreshTokenExpire;
     }
 }

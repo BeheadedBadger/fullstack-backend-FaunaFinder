@@ -1,6 +1,12 @@
 package nl.novi.FaunaFinder.models;
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
+import java.util.Set;
+
+@Getter
+@Setter
 @Entity
 @Table(name = "donations")
 public class Donation {
@@ -8,36 +14,9 @@ public class Donation {
     @Id
     Long id;
     int amount;
+    String frequency;
     @ManyToOne
     User shelter;
     @ManyToOne
     User user;
-
-    public Long getId() {
-        return id;
-    }
-
-    public int getAmount() {
-        return amount;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public User getShelter() {
-        return shelter;
-    }
-
-    public void setShelter(User shelter) {
-        this.shelter = shelter;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
 }
