@@ -36,17 +36,6 @@ public class AnimalService {
         this.imgService = imgService;
     }
 
-    public Optional<Animal> update(long id, Animal animal) {
-        Optional<Animal> model = repo.findById(id);
-        if(model.isPresent()) {
-            model.get().setName(animal.getName());
-            return model;
-        }
-        else {
-            throw new AnimalNotFoundException(id);
-        }
-    }
-
     public String delete (long id) {
         Optional<Animal> animal = repo.findById(id);
         if (animal.isPresent()) {

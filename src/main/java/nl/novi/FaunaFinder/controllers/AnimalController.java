@@ -1,5 +1,6 @@
 package nl.novi.FaunaFinder.controllers;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
+import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
 import nl.novi.FaunaFinder.models.Animal;
@@ -82,9 +83,10 @@ public class AnimalController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Optional<Animal>> UpdateAnimal (@PathVariable long id, @RequestBody Animal animal) {
-       Optional<Animal> optionalAnimal = animalService.update(id, animal);
-       return ResponseEntity.ok().body(optionalAnimal);
+    public ResponseEntity<AnimalOutputDto> UpdateAnimal (@PathVariable long id, @RequestBody Animal animal) {
+       Animal updatedanimal = animalService.update(id, animal);
+       AnimalOutputDto outputDto = AnimalMapper.fromModelToOutputDto(updatedanimal);
+       return ResponseEntity.ok().body(outputDto);
     }
 
     @DeleteMapping("/{id}")
