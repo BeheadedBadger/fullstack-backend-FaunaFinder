@@ -1,6 +1,5 @@
 package nl.novi.FaunaFinder.service;
 import nl.novi.FaunaFinder.dtos.input.DonationInputDto;
-import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
 import nl.novi.FaunaFinder.dtos.output.DonationOutputDto;
 import nl.novi.FaunaFinder.dtos.mapper.DonationMapper;
 import nl.novi.FaunaFinder.models.Donation;
@@ -8,7 +7,6 @@ import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.repositories.DonationRepository;
 import nl.novi.FaunaFinder.repositories.UserRepository;
 import org.springframework.stereotype.Service;
-
 import java.util.Optional;
 
 @Service

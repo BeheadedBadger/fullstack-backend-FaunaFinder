@@ -3,10 +3,6 @@ import nl.novi.FaunaFinder.dtos.input.DonationInputDto;
 import nl.novi.FaunaFinder.dtos.output.DonationOutputDto;
 import nl.novi.FaunaFinder.models.Donation;
 import nl.novi.FaunaFinder.models.User;
-import nl.novi.FaunaFinder.repositories.UserRepository;
-
-import java.util.Objects;
-import java.util.Optional;
 
 public class DonationMapper {
 

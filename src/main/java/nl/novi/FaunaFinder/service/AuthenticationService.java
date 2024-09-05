@@ -5,7 +5,6 @@ import nl.novi.FaunaFinder.dtos.output.AuthenticationResponse;
 import nl.novi.FaunaFinder.exceptions.TokenGenerationFailedException;
 import nl.novi.FaunaFinder.models.Token;
 import nl.novi.FaunaFinder.models.User;
-import nl.novi.FaunaFinder.repositories.FileUploadRepository;
 import nl.novi.FaunaFinder.repositories.TokenRepository;
 import nl.novi.FaunaFinder.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,12 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -28,27 +24,23 @@ import java.util.Optional;
 public class AuthenticationService {
 
     private final UserRepository repository;
-    private final ImageService imgService;
     private final JwtService jwtService;
     private final TokenRepository tokenRepository;
     private final PasswordEncoder passwordEncoder;
     private final AuthenticationManager authenticationManager;
-    private final UserService userService;
 
-    public AuthenticationService(UserRepository repository, FileUploadRepository fileRepo, ImageService imgService,
+    public AuthenticationService(UserRepository repository,
                                  PasswordEncoder passwordEncoder,
                                  JwtService jwtService,
                                  TokenRepository tokenRepository, AuthenticationManager authenticationManager, UserService userService) {
         this.repository = repository;
-        this.imgService = imgService;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.tokenRepository = tokenRepository;
         this.authenticationManager = authenticationManager;
-        this.userService = userService;
     }
 
-    public AuthenticationResponse register(UserInputDto request) throws Exception {
+    public AuthenticationResponse register(UserInputDto request) {
         User user = UserMapper.fromInputDtoToModel(request);
 
         // check if user already exist. if exist than authenticate the user
@@ -106,9 +98,7 @@ public class AuthenticationService {
             return;
         }
 
-        validTokens.forEach(t-> {
-            t.setLoggedOut(true);
-        });
+        validTokens.forEach(t-> t.setLoggedOut(true));
 
         tokenRepository.saveAll(validTokens);
     }

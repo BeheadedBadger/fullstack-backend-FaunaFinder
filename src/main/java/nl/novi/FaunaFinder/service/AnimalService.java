@@ -1,24 +1,16 @@
 package nl.novi.FaunaFinder.service;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
-import nl.novi.FaunaFinder.dtos.input.UserInputDto;
 import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
-import nl.novi.FaunaFinder.dtos.mapper.UserMapper;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
-import nl.novi.FaunaFinder.dtos.output.AuthenticationResponse;
-import nl.novi.FaunaFinder.exceptions.AnimalCreationException;
 import nl.novi.FaunaFinder.exceptions.AnimalNotFoundException;
-import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
+import nl.novi.FaunaFinder.exceptions.ImageNotFoundException;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Image;
-import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.repositories.AnimalRepository;
 import nl.novi.FaunaFinder.repositories.FileUploadRepository;
 import org.springframework.core.io.Resource;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -73,12 +65,26 @@ public class AnimalService {
         return outputDtos;
     }
 
-    //TODO make this actually update
-    public Animal update(Long id, Animal animal) {
-        return animal;
+    public Animal update(Long id, AnimalInputDto animalInputDto) {
+        Optional<Animal> animal = repo.findById(id);
+        if (animal.isPresent()) {
+            animal.get().setName(animalInputDto.name);
+            animal.get().setAge(animalInputDto.age);
+            animal.get().setSex(animalInputDto.sex);
+            animal.get().setCommonSpeciesName(animalInputDto.commonSpeciesName);
+            animal.get().setScientificSpeciesName(animalInputDto.scientificSpeciesName);
+            animal.get().setWarning(animalInputDto.warning);
+            animal.get().setWarningExplanation(animalInputDto.warningExplanation);
+            animal.get().setDescription(animalInputDto.description);
+            animal.get().setSpeciesCategory(animalInputDto.category);
+            return animal.get();
+        }
+        else {
+            throw new AnimalNotFoundException(id);
+        }
     }
 
-    public Animal assignPhotoToAnimal(String fileName, Long id) throws Exception {
+    public Animal assignPhotoToAnimal(String fileName, Long id) throws ImageNotFoundException {
         Optional<Animal> animal = repo.findById(id);
         Optional<Image> image = fileRepo.findById(fileName);
         if (image.isPresent() && animal.isPresent()) {
@@ -88,10 +94,7 @@ public class AnimalService {
             return animal.get();
         }
 
-        throw new Exception("Failed to add image");
-
-        //TODO
-        //throw new ImageToFoundException(ImageToFoundException.getCause);
+        throw new ImageNotFoundException();
     }
 
     public Resource getImage(long id) throws Exception {

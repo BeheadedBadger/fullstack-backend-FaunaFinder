@@ -2,7 +2,6 @@ package nl.novi.FaunaFinder.controllers;
 import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
 import nl.novi.FaunaFinder.dtos.mapper.AnimalMapper;
 import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
-import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
 import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.service.ImageService;
 import nl.novi.FaunaFinder.service.AnimalService;
@@ -11,9 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import jakarta.validation.Valid;
-
-import javax.swing.*;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +67,6 @@ public class AnimalController {
                 .path("/photo")
                 .toString();
         String name = id.toString();
-        System.out.println(name);
         String fileName = imageService.storeFile(id.toString(), file);
         Animal animal = animalService.assignPhotoToAnimal(fileName, id);
         return ResponseEntity.created(URI.create(url)).body(animal);

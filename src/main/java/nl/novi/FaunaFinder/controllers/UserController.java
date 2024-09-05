@@ -104,8 +104,4 @@ public class UserController {
         }
         throw new Exception("Failed to remove animal from favourites");
     }
-
-    //TODO edit user
-    //TODO delete user
-    //TODO upgrade user roles
 }
