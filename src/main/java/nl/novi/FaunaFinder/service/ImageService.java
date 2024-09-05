@@ -1,4 +1,5 @@
 package nl.novi.FaunaFinder.service;
+import nl.novi.FaunaFinder.exceptions.ImageNotFoundException;
 import org.springframework.beans.factory.annotation.Value;
 import nl.novi.FaunaFinder.models.Image;
 import nl.novi.FaunaFinder.repositories.FileUploadRepository;
@@ -55,9 +56,7 @@ public class ImageService {
         if(resource.exists()&& resource.isReadable()) {
             return resource;
         } else {
-            throw new RuntimeException("the file doesn't exist or not readable");
-            //TODO
-            //throw new ImageToFoundException(ImageToFoundException.getCause);
+            throw new ImageNotFoundException();
         }
     }
 }

@@ -1,7 +1,5 @@
 package nl.novi.FaunaFinder.controllers;
-import nl.novi.FaunaFinder.dtos.input.AnimalInputDto;
 import nl.novi.FaunaFinder.dtos.input.DonationInputDto;
-import nl.novi.FaunaFinder.dtos.output.AnimalOutputDto;
 import nl.novi.FaunaFinder.dtos.output.DonationOutputDto;
 import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
 import nl.novi.FaunaFinder.service.DonationService;

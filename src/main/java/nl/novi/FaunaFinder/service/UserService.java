@@ -58,7 +58,7 @@ public class UserService implements UserDetailsService {
         return outputDtos;
     }
 
-    public User assignPhotoToUser(String fileName, String id) throws Exception {
+    public User assignPhotoToUser(String fileName, String id) {
         Optional<User> user = repo.findByUsername(id);
         Optional<Image> image = fileRepo.findById(fileName);
         if (image.isPresent() && user.isPresent()) {
