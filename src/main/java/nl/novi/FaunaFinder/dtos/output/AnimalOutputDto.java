@@ -1,7 +1,6 @@
 package nl.novi.FaunaFinder.dtos.output;
 import lombok.Getter;
 import lombok.Setter;
-import nl.novi.FaunaFinder.models.Animal;
 import nl.novi.FaunaFinder.models.Sex;
 import nl.novi.FaunaFinder.models.User;
 

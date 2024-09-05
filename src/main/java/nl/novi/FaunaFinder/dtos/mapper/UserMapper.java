@@ -1,9 +1,7 @@
 package nl.novi.FaunaFinder.dtos.mapper;
 import nl.novi.FaunaFinder.dtos.input.UserInputDto;
 import nl.novi.FaunaFinder.dtos.output.UserOutputDto;
-import nl.novi.FaunaFinder.models.Role;
 import nl.novi.FaunaFinder.models.User;
-import nl.novi.FaunaFinder.service.ImageService;
 
 public class UserMapper {
 

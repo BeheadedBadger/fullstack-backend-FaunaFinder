@@ -1,8 +1,5 @@
 package nl.novi.FaunaFinder.config;
 import nl.novi.FaunaFinder.filter.JwtAuthenticationFilter;
-import nl.novi.FaunaFinder.repositories.FileUploadRepository;
-import nl.novi.FaunaFinder.repositories.UserRepository;
-import nl.novi.FaunaFinder.service.JwtService;
 import nl.novi.FaunaFinder.service.UserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,11 +9,9 @@ import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.access.expression.WebExpressionAuthorizationManager;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 
@@ -28,24 +23,10 @@ public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    private final CustomLogoutHandler logoutHandler;
 
-    private final UserRepository userRepository;
-
-    private final JwtService jwtService;
-
-    private final FileUploadRepository fileRepo;
-
-
-
-    public SecurityConfig(UserService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter,
-                          CustomLogoutHandler logoutHandler, UserRepository userRepository, JwtService jwtService, FileUploadRepository fileRepo) {
+    public SecurityConfig(UserService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
         this.userDetailsService = userDetailsService;
-        this.userRepository = userRepository;
-        this.jwtService = jwtService;
-        this.fileRepo = fileRepo;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.logoutHandler = logoutHandler;
     }
 
     @Bean

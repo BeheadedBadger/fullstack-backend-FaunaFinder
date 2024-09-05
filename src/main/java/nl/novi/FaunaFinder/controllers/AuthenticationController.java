@@ -4,7 +4,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import nl.novi.FaunaFinder.dtos.input.UserInputDto;
 import nl.novi.FaunaFinder.dtos.output.AuthenticationResponse;
 import nl.novi.FaunaFinder.exceptions.AuthenticationFailedException;
-import nl.novi.FaunaFinder.models.User;
 import nl.novi.FaunaFinder.service.AuthenticationService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,7 +29,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserInputDto request) throws Exception {
+    public ResponseEntity<AuthenticationResponse> login(@RequestBody UserInputDto request) throws AuthenticationFailedException {
 
         try {
             return ResponseEntity.ok(authService.authenticate(request));
@@ -41,7 +40,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/refresh_token")
-    public ResponseEntity<Object> refreshToken(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public ResponseEntity<Object> refreshToken(HttpServletRequest request, HttpServletResponse response) throws AuthenticationFailedException {
         try {
             return ResponseEntity.ok(authService.refreshToken(request, response));
         }

@@ -76,13 +76,11 @@ public class JwtService {
 
     public String generateAccessToken(User user) {
         long accessTokenExpire = 1000 * 60 * 60 * 24; // 1 day in ms;
-        System.out.println(accessTokenExpire);
         Map<String, Object> claims = new HashMap<>();
         return generateToken(claims, user.getUsername(), accessTokenExpire);
     }
 
     public String generateRefreshToken(User user) {
-        System.out.println(refreshTokenExpire);
         Map<String, Object> claims = new HashMap<>();
         return generateToken(claims, user.getUsername(), refreshTokenExpire);
     }
